@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 3 - Student & Book Borrowing System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        header {
+            padding: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        .code-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            margin: 20px 0 0 0;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+
+        .code-description {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .learning-objective {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .important-box {
+            background: #ffe7e7;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .backend-flow {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .step-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .flow-diagram {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .terminal-command {
+            background: #2d2d2d;
+            color: #00ff00;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #00ff00;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .terminal-command:hover {
+            background: #404040;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .navigation a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.9em;
+        }
+
+        .navigation a:hover {
+            color: #764ba2;
+            transform: translateX(10px);
+        }
+
+        @media (min-width: 1400px) {
+            .navigation {
+                display: block;
+            }
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>👥 Phase 3: Student & Book Borrowing System</h1>
+            <p>Complete Backend Integration with One-to-Many Relationships</p>
+        </header>
+
+        <div class="navigation">
+            <a href="#overview">Overview</a>
+            <a href="#models">Models</a>
+            <a href="#forms">Forms</a>
+            <a href="#views">Views</a>
+            <a href="#templates">Templates</a>
+            <a href="#data-flow">Data Flow</a>
+            <a href="#migrations">Migrations</a>
+            <a href="#testing">Testing</a>
+            <a href="#comparison">Comparison</a>
+        </div>
+
+        <div class="content">
+            <!-- OVERVIEW SECTION -->
+            <section id="overview">
+                <h2>🎯 Phase 3 Overview</h2>
+                
+                <div class="learning-objective">
+                    <strong>What is Phase 3?</strong><br>
+                    Phase 3 introduces relationships between models. Students can borrow multiple books, and books can be borrowed by multiple students. This requires understanding database relationships, complex queries, and how to display related data in templates.
+                </div>
+
+                <div class="backend-flow">
+                    <strong>Phase 3 Concepts:</strong>
+                    <ul>
+                        <li><strong>One-to-Many:</strong> One Student has Many IssuedBooks</li>
+                        <li><strong>Foreign Keys:</strong> Link IssuedBook to both Student and Book</li>
+                        <li><strong>QuerySet Methods:</strong> filter(), select_related(), prefetch_related()</li>
+                        <li><strong>Complex Forms:</strong> Multiple books in one transaction</li>
+                        <li><strong>Related Data Display:</strong> Show student's all borrowed books</li>
+                    </ul>
+                </div>
+
+                <div class="important-box">
+                    <strong>⚠️ New Complexity:</strong> Phase 3 requires understanding relationships and joins. Data now spans multiple tables. Queries must fetch related data efficiently.
+                </div>
+            </section>
+
+            <!-- MODELS SECTION -->
+            <section id="models">
+                <h2>📊 Phase 3: Models with Relationships</h2>
+
+                <h3>Student Model</h3>
+
+                <div class="code-title">myapp/models.py - Student Model</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.db <span class="keyword">import</span> models
+
+<span class="keyword">class</span> Student(models.Model):
+    <span class="comment">"""
+    Student model - stores library member information
+    """</span>
+    
+    roll_number = models.CharField(
+        max_length=20,
+        unique=True,
+        help_text='e.g., 2024001'
+    )
+    
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=10)
+    address = models.TextField()
+    
+    enrollment_date = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    
+    max_books_allowed = models.IntegerField(default=5)
+    
+    <span class="keyword">class</span> Meta:
+        db_table = 'students'
+        ordering = ['-enrollment_date']
+    
+    <span class="keyword">def</span> __str__(self):
+        <span class="keyword">return</span> f"{self.name} ({self.roll_number})"
+    
+    <span class="keyword">def</span> get_borrowed_books_count(self):
+        <span class="comment">"""Count active borrowed books"""</span>
+        <span class="keyword">return</span> self.issuedbook_set.filter(
+            return_date__isnull=True
+        ).count()
+    
+    <span class="keyword">def</span> can_borrow_more(self):
+        <span class="comment">"""Check if student can borrow more books"""</span>
+        <span class="keyword">return</span> self.get_borrowed_books_count() < self.max_books_allowed</code></pre></div>
+
+                <h3>IssuedBook Model (One-to-Many Relationship)</h3>
+
+                <div class="code-title">myapp/models.py - IssuedBook Model</div>
+                <div class="code-block"><pre><code><span class="keyword">class</span> IssuedBook(models.Model):
+    <span class="comment">"""
+    IssuedBook = a transaction record of borrowing
+    Links Student to Book with borrowing dates
+    """</span>
+    
+    <span class="comment"># Foreign Keys - relationships to other models</span>
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name='issuedbook_set'
+    )
+    
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.PROTECT,
+        related_name='borrowed_by'
+    )
+    
+    <span class="comment"># Date tracking</span>
+    issue_date = models.DateTimeField(auto_now_add=True)
+    
+    due_date = models.DateField(
+        help_text='When should book be returned?'
+    )
+    
+    return_date = models.DateField(
+        null=True,
+        blank=True,
+        help_text='When book actually returned'
+    )
+    
+    <span class="comment"># Fine tracking</span>
+    fine_amount = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0.00
+    )
+    
+    <span class="keyword">class</span> Meta:
+        db_table = 'issued_books'
+        ordering = ['-issue_date']
+    
+    <span class="keyword">def</span> __str__(self):
+        <span class="keyword">return</span> f"{self.student.name} - {self.book.title}"
+    
+    <span class="keyword">def</span> is_overdue(self):
+        <span class="comment">"""Check if book is past due date"""</span>
+        <span class="keyword">if</span> self.return_date:
+            <span class="keyword">return</span> False
+        <span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone
+        <span class="keyword">return</span> timezone.now().date() > self.due_date
+    
+    <span class="keyword">def</span> calculate_fine(self):
+        <span class="comment">"""Calculate fine if overdue (10 per day)"""</span>
+        <span class="keyword">if</span> self.is_overdue():
+            <span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone
+            days_overdue = (
+                timezone.now().date() - self.due_date
+            ).days
+            <span class="keyword">return</span> days_overdue * 10
+        <span class="keyword">return</span> 0</code></pre></div>
+
+                <div class="code-description">
+                    <strong>📌 Relationship Explanation:</strong>
+                    <ul>
+                        <li><code>ForeignKey(Student)</code> - Each IssuedBook belongs to ONE Student</li>
+                        <li><code>ForeignKey(Book)</code> - Each IssuedBook references ONE Book</li>
+                        <li><code>related_name='issuedbook_set'</code> - Access from student: <code>student.issuedbook_set.all()</code></li>
+                        <li><code>on_delete=CASCADE</code> - Deleting student deletes their record</li>
+                        <li><code>on_delete=PROTECT</code> - Cannot delete book if borrowed</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- FORMS SECTION -->
+            <section id="forms">
+                <h2>📋 Phase 3: Forms for Complex Data</h2>
+
+                <h3>StudentForm - ModelForm for Student</h3>
+
+                <div class="code-title">myapp/forms.py - StudentForm</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django <span class="keyword">import</span> forms
+<span class="keyword">from</span> .models <span class="keyword">import</span> Student, IssuedBook
+
+<span class="keyword">class</span> StudentForm(forms.ModelForm):
+    <span class="comment">"""ModelForm for Student registration/editing"""</span>
+    
+    <span class="keyword">class</span> Meta:
+        model = Student
+        fields = ['roll_number', 'name', 'email', 
+                  'phone', 'address', 'max_books_allowed']
+        widgets = {
+            'roll_number': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '2024001'
+            }),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Full name'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'maxlength': '10'
+            }),
+            'address': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3
+            })
+        }
+    
+    <span class="keyword">def</span> clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        <span class="keyword">if</span> phone <span class="keyword">and</span> <span class="keyword">not</span> phone.isdigit():
+            <span class="keyword">raise</span> forms.ValidationError(
+                'Phone must contain only digits'
+            )
+        <span class="keyword">return</span> phone</code></pre></div>
+
+                <h3>IssueBookForm - Issue Book to Student</h3>
+
+                <div class="code-title">myapp/forms.py - IssueBookForm</div>
+                <div class="code-block"><pre><code><span class="keyword">class</span> IssueBookForm(forms.ModelForm):
+    <span class="comment">"""
+    Form to issue book to a student
+    Only shows books in stock
+    """</span>
+    
+    book = forms.ModelChoiceField(
+        queryset=Book.objects.filter(quantity__gt=0),
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        }),
+        empty_label='--- Select a book ---'
+    )
+    
+    due_date = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control'
+        })
+    )
+    
+    <span class="keyword">class</span> Meta:
+        model = IssuedBook
+        fields = ['book', 'due_date']
+    
+    <span class="keyword">def</span> clean_due_date(self):
+        <span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone
+        due_date = self.cleaned_data.get('due_date')
+        
+        <span class="keyword">if</span> due_date <span class="keyword">and</span> due_date <= timezone.now().date():
+            <span class="keyword">raise</span> forms.ValidationError(
+                'Due date must be in future'
+            )
+        <span class="keyword">return</span> due_date</code></pre></div>
+            </section>
+
+            <!-- VIEWS SECTION -->
+            <section id="views">
+                <h2>🎬 Phase 3: Complex Views with QuerySets</h2>
+
+                <h3>List All Students (with prefetching)</h3>
+
+                <div class="code-title">myapp/views.py - student_list with Query Optimization</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Prefetch, Count, Q
+
+<span class="keyword">def</span> student_list(request):
+    <span class="comment">"""
+    Get all students with borrowed books count
+    Optimized with prefetch_related
+    """</span>
+    
+    students = Student.objects.prefetch_related(
+        Prefetch(
+            'issuedbook_set',
+            IssuedBook.objects.filter(return_date__isnull=True)
+        )
+    ).annotate(
+        borrowed_count=Count(
+            'issuedbook',
+            filter=Q(issuedbook__return_date__isnull=True)
+        )
+    )
+    
+    context = {
+        'students': students,
+        'page_title': 'All Students'
+    }
+    
+    <span class="keyword">return</span> render(request, 'myapp/student_list.html', context)</code></pre></div>
+
+                <h3>Student Detail with Borrowed Books</h3>
+
+                <div class="code-title">myapp/views.py - student_detail</div>
+                <div class="code-block"><pre><code><span class="keyword">def</span> student_detail(request, pk):
+    <span class="comment">"""
+    Show student details and all borrowed books
+    Calculate fines if any books are overdue
+    """</span>
+    
+    student = get_object_or_404(
+        Student.objects.prefetch_related(
+            'issuedbook_set__book'
+        ),
+        pk=pk
+    )
+    
+    borrowed_books = student.issuedbook_set.filter(
+        return_date__isnull=True
+    )
+    
+    total_fine = sum(
+        book.calculate_fine() for book in borrowed_books
+    )
+    
+    can_borrow = student.can_borrow_more()
+    
+    context = {
+        'student': student,
+        'borrowed_books': borrowed_books,
+        'total_fine': total_fine,
+        'can_borrow': can_borrow,
+        'page_title': f'Student: {student.name}'
+    }
+    
+    <span class="keyword">return</span> render(request, 'myapp/student_detail.html', context)</code></pre></div>
+
+                <h3>Issue Book to Student</h3>
+
+                <div class="code-title">myapp/views.py - issue_book</div>
+                <div class="code-block"><pre><code><span class="keyword">def</span> issue_book(request, student_id):
+    <span class="comment">"""Issue a book to a student"""</span>
+    
+    student = get_object_or_404(Student, pk=student_id)
+    
+    <span class="keyword">if</span> <span class="keyword">not</span> student.can_borrow_more():
+        messages.error(request, 'Student reached borrowing limit')
+        <span class="keyword">return</span> redirect('myapp:student_detail', pk=student_id)
+    
+    <span class="keyword">if</span> request.method == 'POST':
+        form = IssueBookForm(request.POST)
+        
+        <span class="keyword">if</span> form.is_valid():
+            issued_book = form.save(commit=False)
+            issued_book.student = student
+            
+            book = issued_book.book
+            book.quantity -= 1
+            book.save()
+            
+            issued_book.save()
+            
+            messages.success(request, f'Book issued to {student.name}')
+            <span class="keyword">return</span> redirect('myapp:student_detail', pk=student_id)
+    <span class="keyword">else:</span>
+        form = IssueBookForm()
+    
+    context = {'form': form, 'student': student}
+    <span class="keyword">return</span> render(request, 'myapp/issue_book_form.html', context)</code></pre></div>
+
+                <h3>Return Book</h3>
+
+                <div class="code-title">myapp/views.py - return_book</div>
+                <div class="code-block"><pre><code><span class="keyword">def</span> return_book(request, issue_id):
+    <span class="comment">"""Mark book as returned and calculate fine"""</span>
+    
+    issued_book = get_object_or_404(IssuedBook, pk=issue_id)
+    
+    <span class="keyword">if</span> request.method == 'POST':
+        issued_book.fine_amount = issued_book.calculate_fine()
+        
+        <span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone
+        issued_book.return_date = timezone.now().date()
+        issued_book.save()
+        
+        book = issued_book.book
+        book.quantity += 1
+        book.save()
+        
+        <span class="keyword">if</span> issued_book.fine_amount > 0:
+            messages.warning(request, 
+                f'Fine: ₹{issued_book.fine_amount}')
+        <span class="keyword">else:</span>
+            messages.success(request, 'Book returned successfully')
+        
+        <span class="keyword">return</span> redirect('myapp:student_detail',
+            pk=issued_book.student.pk)
+    
+    context = {
+        'issued_book': issued_book,
+        'fine': issued_book.calculate_fine()
+    }
+    
+    <span class="keyword">return</span> render(request, 'myapp/return_book_form.html', context)</code></pre></div>
+            </section>
+
+            <!-- TEMPLATES SECTION -->
+            <section id="templates">
+                <h2>🎨 Phase 3: Templates with Related Data</h2>
+
+                <h3>student_list.html - All Students</h3>
+
+                <div class="code-title">templates/myapp/student_list.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;All Students&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;👥 Students&lt;/h1&gt;
+    &lt;a href="{% url 'myapp:create_student' %}"&gt;➕ Add Student&lt;/a&gt;
+    
+    {% if students %}
+        &lt;table border="1"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Roll Number&lt;/th&gt;
+                &lt;th&gt;Name&lt;/th&gt;
+                &lt;th&gt;Email&lt;/th&gt;
+                &lt;th&gt;Books Borrowed&lt;/th&gt;
+                &lt;th&gt;Status&lt;/th&gt;
+            &lt;/tr&gt;
+            {% for student in students %}
+                &lt;tr&gt;
+                    &lt;td&gt;{{ student.roll_number }}&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="{% url 'myapp:student_detail' pk=student.id %}"&gt;
+                            {{ student.name }}
+                        &lt;/a&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;{{ student.email }}&lt;/td&gt;
+                    &lt;td&gt;
+                        {{ student.borrowed_count }}/{{ student.max_books_allowed }}
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        {% if student.is_active %}🟢 Active{% else %}🔴 Inactive{% endif %}
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+        &lt;/table&gt;
+    {% else %}
+        &lt;p&gt;No students found.&lt;/p&gt;
+    {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <h3>student_detail.html - Student & Borrowed Books</h3>
+
+                <div class="code-title">templates/myapp/student_detail.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;{{ student.name }}&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;{{ student.name }}&lt;/h1&gt;
+    
+    &lt;p&gt;&lt;strong&gt;Roll Number:&lt;/strong&gt; {{ student.roll_number }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Email:&lt;/strong&gt; {{ student.email }}&lt;/p&gt;
+    
+    &lt;div style="background: #e6f3ff; padding: 15px;"&gt;
+        &lt;h3&gt;📊 Borrowing Status&lt;/h3&gt;
+        &lt;p&gt;Books Borrowed: &lt;strong&gt;{{ borrowed_books|length }}/{{ student.max_books_allowed }}&lt;/strong&gt;&lt;/p&gt;
+        
+        {% if total_fine > 0 %}
+            &lt;p style="color: red;"&gt;⚠️ Outstanding Fine: ₹{{ total_fine }}&lt;/p&gt;
+        {% endif %}
+        
+        {% if can_borrow %}
+            &lt;a href="{% url 'myapp:issue_book' student_id=student.id %}"&gt;
+                ➕ Issue Book
+            &lt;/a&gt;
+        {% else %}
+            &lt;p style="color: red;"&gt;❌ Student has reached borrowing limit&lt;/p&gt;
+        {% endif %}
+    &lt;/div&gt;
+    
+    &lt;h2&gt;📚 Currently Borrowed Books&lt;/h2&gt;
+    
+    {% if borrowed_books %}
+        &lt;table border="1"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Book Title&lt;/th&gt;
+                &lt;th&gt;Issued&lt;/th&gt;
+                &lt;th&gt;Due Date&lt;/th&gt;
+                &lt;th&gt;Status&lt;/th&gt;
+                &lt;th&gt;Action&lt;/th&gt;
+            &lt;/tr&gt;
+            {% for issue in borrowed_books %}
+                &lt;tr&gt;
+                    &lt;td&gt;{{ issue.book.title }}&lt;/td&gt;
+                    &lt;td&gt;{{ issue.issue_date|date:"d-m-Y" }}&lt;/td&gt;
+                    &lt;td&gt;{{ issue.due_date }}&lt;/td&gt;
+                    &lt;td&gt;
+                        {% if issue.is_overdue %}⚠️ OVERDUE{% else %}✅ On time{% endif %}
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="{% url 'myapp:return_book' issue_id=issue.id %}"&gt;↩️ Return&lt;/a&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+        &lt;/table&gt;
+    {% else %}
+        &lt;p&gt;No books currently borrowed.&lt;/p&gt;
+    {% endif %}
+    
+    &lt;br&gt;
+    &lt;a href="{% url 'myapp:student_list' %}"&gt;← Back to Students&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+            </section>
+
+            <!-- DATA FLOW SECTION -->
+            <section id="data-flow">
+                <h2>🔄 Phase 3 Data Flow - Relationships</h2>
+
+                <div class="flow-diagram">
+PHASE 3 RELATIONSHIP FLOW
+═════════════════════════
+
+Issue Book Request:
+  1. Student clicks "Issue Book" on detail page
+  2. Backend: check can_borrow_more()
+  3. Form shows available books (quantity > 0)
+  4. Student selects book + due date
+  5. Validation: due_date in future
+  6. Create IssuedBook (student+book+dates)
+  7. Decrease book.quantity by 1
+  8. Save both to database
+  9. Redirect to student detail
+
+Return Book Request:
+  1. Student clicks "Return" on borrowed book
+  2. Calculate fine if overdue
+  3. Set return_date to today
+  4. Increase book.quantity by 1
+  5. Save IssuedBook + Book
+  6. Display fine if any
+
+Query Optimization:
+  student_detail:
+    - Prefetch: student.issuedbook_set (borrowed books)
+    - Select_related: book (book details)
+    - Result: 1 query instead of N queries
+                </div>
+
+                <div class="backend-flow">
+                    <strong>🔑 Key Phase 3 Concepts:</strong>
+                    <ul>
+                        <li><strong>ForeignKey:</strong> Links IssuedBook to Student and Book</li>
+                        <li><strong>Reverse Relationships:</strong> student.issuedbook_set.all()</li>
+                        <li><strong>Related Name:</strong> Allows reverse access with custom name</li>
+                        <li><strong>Prefetch_related:</strong> Loads related objects efficiently</li>
+                        <li><strong>Select_related:</strong> Joins data in single query</li>
+                        <li><strong>Counting Relations:</strong> How many books each student borrowed</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MIGRATIONS SECTION -->
+            <section id="migrations">
+                <h2>⚙️ Phase 3 Database Migrations</h2>
+
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Create Migration File</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py makemigrations</div>
+
+                <div class="code-description">
+                    Django detects new models and creates migration file
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Apply Migration</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py migrate</div>
+
+                <div class="code-description">
+                    Creates database tables for Student and IssuedBook
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Register in Admin</strong>
+                </div>
+
+                <div class="code-title">myapp/admin.py - Register Models</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin
+<span class="keyword">from</span> .models <span class="keyword">import</span> Student, IssuedBook
+
+@admin.register(Student)
+<span class="keyword">class</span> StudentAdmin(admin.ModelAdmin):
+    list_display = ['roll_number', 'name', 'email', 'is_active']
+    list_filter = ['is_active', 'enrollment_date']
+    search_fields = ['roll_number', 'name', 'email']
+
+@admin.register(IssuedBook)
+<span class="keyword">class</span> IssuedBookAdmin(admin.ModelAdmin):
+    list_display = ['student', 'book', 'issue_date', 'due_date', 'return_date']
+    list_filter = ['issue_date', 'return_date']
+    search_fields = ['student__name', 'book__title']</code></pre></div>
+            </section>
+
+            <!-- TESTING SECTION -->
+            <section id="testing">
+                <h2>✅ Phase 3 Testing Procedures</h2>
+
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Add Students</strong>
+                    <ul>
+                        <li>Visit /students/add/</li>
+                        <li>Create 3-4 test students</li>
+                        <li>Verify they appear in list</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Issue Books</strong>
+                    <ul>
+                        <li>Go to student detail page</li>
+                        <li>Click "Issue Book"</li>
+                        <li>Select book + due date</li>
+                        <li>Verify book quantity decreases</li>
+                        <li>Verify borrowed count increases</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Test Borrowing Limits</strong>
+                    <ul>
+                        <li>Try issuing 6 books when max is 5</li>
+                        <li>Verify error: "Student has reached borrowing limit"</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Phase 3 Complete When:</strong>
+                    <ul>
+                        <li>Students can be added/edited</li>
+                        <li>Books can be issued (quantity decreases)</li>
+                        <li>Books can be returned (quantity increases)</li>
+                        <li>Borrowing limit enforced</li>
+                        <li>Overdue books shown with warnings</li>
+                        <li>All relationships working correctly</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- COMPARISON SECTION -->
+            <section id="comparison">
+                <h2>📊 Phase 1 vs Phase 2 vs Phase 3</h2>
+
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Phase 1</th>
+                        <th>Phase 2</th>
+                        <th>Phase 3</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Models</strong></td>
+                        <td>Book only</td>
+                        <td>Book only</td>
+                        <td>Book + Student + IssuedBook</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relationships</strong></td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>One-to-Many (FK)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Queries</strong></td>
+                        <td>Simple</td>
+                        <td>Form validation</td>
+                        <td>Complex joins</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Beginner</td>
+                        <td>Intermediate</td>
+                        <td>Advanced</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <footer>
+            <p>📝 <strong>Library Management System - Phase 3 (Updated)</strong></p>
+            <p>Student & Book Borrowing System with Relationships</p>
+            <p>© 2025 | November 17, 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.terminal-command').forEach(cmd => {
+            cmd.addEventListener('click', function() {
+                const text = this.innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = '✅ Copied!';
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

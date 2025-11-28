@@ -1,0 +1,11 @@
+Target -
+		Email Notifications - Send approval/rejection emails
+		Book Cover Images - Media upload & display ✅️
+		Pagination - Add pagination to large tables
+		Book Reservations - Let students reserve unavailable books
+		Advanced Reporting - Statistics 
+		
+		
+Done-
+		Book Cover Images ➕ Books list with List View and grid View
+		fixing the students dashboard books search field and filter function

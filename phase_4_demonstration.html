@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 4 - User Authentication & Sessions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        .code-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            margin: 20px 0 0 0;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+
+        .code-description {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .learning-objective {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .important-box {
+            background: #ffe7e7;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .backend-flow {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .step-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .flow-diagram {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .terminal-command {
+            background: #2d2d2d;
+            color: #00ff00;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #00ff00;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .terminal-command:hover {
+            background: #404040;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .navigation a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.9em;
+        }
+
+        .navigation a:hover {
+            color: #764ba2;
+            transform: translateX(10px);
+        }
+
+        @media (min-width: 1400px) {
+            .navigation {
+                display: block;
+            }
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 Phase 4: User Authentication & Sessions</h1>
+            <p>Secure Login/Register with User Management</p>
+        </header>
+
+        <div class="navigation">
+            <a href="#overview">Overview</a>
+            <a href="#user-model">User Model</a>
+            <a href="#authentication">Authentication</a>
+            <a href="#forms">Forms</a>
+            <a href="#views">Views</a>
+            <a href="#templates">Templates</a>
+            <a href="#security">Security</a>
+            <a href="#decorators">Decorators</a>
+            <a href="#testing">Testing</a>
+            <a href="#comparison">Comparison</a>
+        </div>
+
+        <div class="content">
+            <!-- OVERVIEW SECTION -->
+            <section id="overview">
+                <h2>🎯 Phase 4 Overview</h2>
+                
+                <div class="learning-objective">
+                    <strong>What is Phase 4?</strong><br>
+                    Phase 4 adds user authentication to the system. Users must register and login before accessing the library. Django provides built-in User model and authentication system. This phase teaches secure password handling, sessions, and access control.
+                </div>
+
+                <div class="backend-flow">
+                    <strong>Phase 4 Concepts:</strong>
+                    <ul>
+                        <li><strong>User Registration:</strong> Create new users with password hashing</li>
+                        <li><strong>User Authentication:</strong> Login with username/password verification</li>
+                        <li><strong>Sessions:</strong> Track logged-in users across requests</li>
+                        <li><strong>Login Required:</strong> Decorators to protect views</li>
+                        <li><strong>Password Hashing:</strong> Secure storage using Django's hashing</li>
+                        <li><strong>Logout:</strong> Destroy session on logout</li>
+                    </ul>
+                </div>
+
+                <div class="important-box">
+                    <strong>⚠️ Security is Critical:</strong> Never store passwords in plain text. Django automatically hashes passwords using strong algorithms. User data must be validated and protected.
+                </div>
+            </section>
+
+            <!-- USER MODEL SECTION -->
+            <section id="user-model">
+                <h2>👤 Phase 4: Django User Model</h2>
+
+                <div class="backend-flow">
+                    <strong>Why Use Django's User Model?</strong>
+                    <ul>
+                        <li>Already built-in and battle-tested</li>
+                        <li>Automatic password hashing</li>
+                        <li>Permission system included</li>
+                        <li>Session management built-in</li>
+                        <li>Safe from common attacks</li>
+                    </ul>
+                </div>
+
+                <h3>Extending User Model</h3>
+
+                <div class="code-title">myapp/models.py - Custom User Profile</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User
+<span class="keyword">from</span> django.db <span class="keyword">import</span> models
+
+<span class="keyword">class</span> UserProfile(models.Model):
+    <span class="comment">"""
+    Extend Django's User model with additional fields
+    Each User has ONE UserProfile (OneToOne)
+    """</span>
+    
+    <span class="comment"># Link to Django's User model</span>
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    
+    <span class="comment"># User type - Librarian or Student</span>
+    ROLE_CHOICES = [
+        ('student', 'Student'),
+        ('librarian', 'Librarian'),
+        ('admin', 'Administrator')
+    ]
+    
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default='student'
+    )
+    
+    phone = models.CharField(max_length=10, blank=True)
+    address = models.TextField(blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    
+    <span class="keyword">class</span> Meta:
+        db_table = 'user_profiles'
+    
+    <span class="keyword">def</span> __str__(self):
+        <span class="keyword">return</span> f"{self.user.get_full_name()} ({self.role})"
+    
+    <span class="keyword">def</span> is_librarian(self):
+        <span class="comment">"""Check if user is librarian"""</span>
+        <span class="keyword">return</span> self.role <span class="keyword">in</span> ['librarian', 'admin']
+    
+    <span class="keyword">def</span> is_student(self):
+        <span class="comment">"""Check if user is student"""</span>
+        <span class="keyword">return</span> self.role == 'student'</code></pre></div>
+
+                <div class="code-description">
+                    <strong>📌 Django User Fields (Built-in):</strong>
+                    <ul>
+                        <li><code>username</code> - Unique username for login</li>
+                        <li><code>email</code> - User's email address</li>
+                        <li><code>password</code> - HASHED password (never stored plain)</li>
+                        <li><code>first_name</code> - User's first name</li>
+                        <li><code>last_name</code> - User's last name</li>
+                        <li><code>is_active</code> - Can user login?</li>
+                        <li><code>is_staff</code> - Can access admin panel?</li>
+                        <li><code>is_superuser</code> - Admin with all permissions?</li>
+                        <li><code>date_joined</code> - Registration date</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- AUTHENTICATION SECTION -->
+            <section id="authentication">
+                <h2>🔐 Authentication Mechanism</h2>
+
+                <h3>How Django Authentication Works</h3>
+
+                <div class="flow-diagram">
+DJANGO AUTHENTICATION FLOW
+══════════════════════════
+
+USER REGISTRATION:
+  1. User submits form: username, password, email
+  2. Check if username already exists
+  3. Django HASHES password: sha256(password + salt)
+  4. Save User with hashed password (never plain text!)
+  5. Create UserProfile linked to User
+  6. Redirect to login page
+
+USER LOGIN:
+  1. User submits: username, password
+  2. Find User by username
+  3. Hash submitted password with same salt
+  4. Compare hashes (NOT plain passwords)
+  5. If match: Create session
+  6. Set session cookie in browser
+  7. Redirect to dashboard
+
+AUTHENTICATED REQUESTS:
+  1. Browser sends request + session cookie
+  2. Django reads cookie → finds session
+  3. Gets User from session
+  4. Available as request.user
+
+LOGOUT:
+  1. User clicks logout
+  2. Delete session from database
+  3. Delete session cookie from browser
+  4. redirect to login
+                </div>
+
+                <div class="important-box">
+                    <strong>🔒 Password Security:</strong>
+                    <ul>
+                        <li><code>make_password()</code> - Hash a new password</li>
+                        <li><code>check_password()</code> - Verify password against hash</li>
+                        <li>Never compare plain passwords</li>
+                        <li>Django uses PBKDF2 + SHA256 by default</li>
+                        <li>Salt added to prevent rainbow table attacks</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- FORMS SECTION -->
+            <section id="forms">
+                <h2>📋 Phase 4: Authentication Forms</h2>
+
+                <h3>Registration Form</h3>
+
+                <div class="code-title">myapp/forms.py - RegistrationForm</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django <span class="keyword">import</span> forms
+<span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User
+<span class="keyword">from</span> .models <span class="keyword">import</span> UserProfile
+
+<span class="keyword">class</span> RegistrationForm(forms.ModelForm):
+    <span class="comment">"""
+    Registration form for new users
+    Handles password confirmation
+    """</span>
+    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter password'
+        }),
+        min_length=8,
+        error_messages={
+            'min_length': 'Password must be at least 8 characters'
+        }
+    )
+    
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm password'
+        }),
+        label='Confirm Password'
+    )
+    
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control'
+        })
+    )
+    
+    <span class="keyword">class</span> Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Username'
+            }),
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'First name'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Last name'
+            })
+        }
+    
+    <span class="keyword">def</span> clean_username(self):
+        <span class="comment">"""Check if username already exists"""</span>
+        username = self.cleaned_data.get('username')
+        <span class="keyword">if</span> User.objects.filter(username=username).exists():
+            <span class="keyword">raise</span> forms.ValidationError(
+                'Username already taken!'
+            )
+        <span class="keyword">return</span> username
+    
+    <span class="keyword">def</span> clean_email(self):
+        <span class="comment">"""Check if email already exists"""</span>
+        email = self.cleaned_data.get('email')
+        <span class="keyword">if</span> User.objects.filter(email=email).exists():
+            <span class="keyword">raise</span> forms.ValidationError(
+                'Email already registered!'
+            )
+        <span class="keyword">return</span> email
+    
+    <span class="keyword">def</span> clean(self):
+        <span class="comment">"""Verify passwords match"""</span>
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password_confirm = cleaned_data.get('password_confirm')
+        
+        <span class="keyword">if</span> password <span class="keyword">and</span> password_confirm:
+            <span class="keyword">if</span> password != password_confirm:
+                self.add_error('password_confirm',
+                    'Passwords do not match!')
+        
+        <span class="keyword">return</span> cleaned_data</code></pre></div>
+
+                <h3>Login Form</h3>
+
+                <div class="code-title">myapp/forms.py - LoginForm</div>
+                <div class="code-block"><pre><code><span class="keyword">class</span> LoginForm(forms.Form):
+    <span class="comment">"""Simple login form"""</span>
+    
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Username'
+        })
+    )
+    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password'
+        })
+    )</code></pre></div>
+            </section>
+
+            <!-- VIEWS SECTION -->
+            <section id="views">
+                <h2>🎬 Phase 4: Authentication Views</h2>
+
+                <h3>User Registration View</h3>
+
+                <div class="code-title">myapp/views.py - register_user</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render, redirect
+<span class="keyword">from</span> django.contrib.auth <span class="keyword">import</span> authenticate, login, logout
+<span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User
+<span class="keyword">from</span> django.contrib import messages
+<span class="keyword">from</span> .forms <span class="keyword">import</span> RegistrationForm, LoginForm
+<span class="keyword">from</span> .models <span class="keyword">import</span> UserProfile
+
+<span class="keyword">def</span> register_user(request):
+    <span class="comment">"""
+    Handle user registration
+    GET: Show registration form
+    POST: Save new user with hashed password
+    """</span>
+    
+    <span class="keyword">if</span> request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        
+        <span class="keyword">if</span> form.is_valid():
+            <span class="comment"># Create user with form data</span>
+            user = form.save(commit=False)
+            
+            <span class="comment"># Important: Use set_password() to hash password</span>
+            password = form.cleaned_data.get('password')
+            user.set_password(password)  <span class="comment"># HASHES password</span>
+            
+            user.save()
+            
+            <span class="comment"># Create associated UserProfile</span>
+            UserProfile.objects.create(
+                user=user,
+                role='student'  <span class="comment"># Default role</span>
+            )
+            
+            messages.success(request,
+                'Registration successful! Please login.')
+            <span class="keyword">return</span> redirect('myapp:login')
+        <span class="keyword">else:</span>
+            messages.error(request,
+                'Please fix the errors below')
+    <span class="keyword">else:</span>
+        form = RegistrationForm()
+    
+    context = {
+        'form': form,
+        'page_title': 'Register New Account'
+    }
+    
+    <span class="keyword">return</span> render(request, 'myapp/register.html', context)</code></pre></div>
+
+                <h3>User Login View</h3>
+
+                <div class="code-title">myapp/views.py - login_user</div>
+                <div class="code-block"><pre><code><span class="keyword">def</span> login_user(request):
+    <span class="comment">"""
+    Handle user login
+    GET: Show login form
+    POST: Authenticate and create session
+    """</span>
+    
+    <span class="comment"># If already logged in, redirect to dashboard</span>
+    <span class="keyword">if</span> request.user.is_authenticated:
+        <span class="keyword">return</span> redirect('myapp:dashboard')
+    
+    <span class="keyword">if</span> request.method == 'POST':
+        form = LoginForm(request.POST)
+        
+        <span class="keyword">if</span> form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            
+            <span class="comment"># authenticate() checks password against hash</span>
+            user = authenticate(
+                request,
+                username=username,
+                password=password
+            )
+            
+            <span class="keyword">if</span> user <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:
+                <span class="comment"># Login successful - create session</span>
+                login(request, user)  <span class="comment\"># Creates session</span>
+                
+                messages.success(request,
+                    f'Welcome back, {user.first_name}!')
+                <span class=\"keyword\">return</span> redirect('myapp:dashboard')
+            <span class=\"keyword\">else:</span>
+                <span class=\"comment\"># Invalid credentials</span>
+                messages.error(request,
+                    'Invalid username or password')
+    <span class=\"keyword\">else:</span>
+        form = LoginForm()
+    
+    context = {
+        'form': form,
+        'page_title': 'Login to Library'
+    }
+    
+    <span class=\"keyword\">return</span> render(request, 'myapp/login.html', context)</code></pre></div>
+
+                <h3>Logout View</h3>
+
+                <div class="code-title">myapp/views.py - logout_user</div>
+                <div class="code-block"><pre><code><span class="keyword\">def</span> logout_user(request):
+    <span class=\"comment\">\"\"\"
+    Handle user logout
+    Destroy session and redirect to login
+    \"\"\"</span>
+    
+    logout(request)  <span class=\"comment\">\"\"\"Deletes session from DB and cookie\"\"\"</span>
+    
+    messages.success(request,
+        'You have been logged out.')
+    <span class=\"keyword\">return</span> redirect('myapp:login')</code></pre></div>
+            </section>
+
+            <!-- TEMPLATES SECTION -->
+            <section id="templates">
+                <h2>🎨 Phase 4: Authentication Templates</h2>
+
+                <h3>register.html - Registration Template</h3>
+
+                <div class="code-title">templates/myapp/register.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Register&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;🔐 Create New Account&lt;/h1&gt;
+    
+    &lt;form method="POST"&gt;
+        {% csrf_token %}
+        
+        {% for field in form %}
+            &lt;div&gt;
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    &lt;div style="color: red;"&gt;
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    &lt;/div&gt;
+                {% endif %}
+            &lt;/div&gt;
+        {% endfor %}
+        
+        &lt;button type="submit"&gt;Register&lt;/button&gt;
+        &lt;p&gt;Already have account? &lt;a href="{% url 'myapp:login' %}"&gt;Login here&lt;/a&gt;&lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <h3>login.html - Login Template</h3>
+
+                <div class="code-title">templates/myapp/login.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Login&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;🔐 Library Login&lt;/h1&gt;
+    
+    <span class=\"comment\">&lt;!-- Show messages if any --&gt;</span>
+    {% if messages %}
+        &lt;div class="messages"&gt;
+            {% for message in messages %}
+                &lt;p class="alert"&gt;{{ message }}&lt;/p&gt;
+            {% endfor %}
+        &lt;/div&gt;
+    {% endif %}
+    
+    &lt;form method="POST"&gt;
+        {% csrf_token %}
+        
+        &lt;div&gt;
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {% if form.username.errors %}
+                &lt;div style="color: red;"&gt;{{ form.username.errors }}&lt;/div&gt;
+            {% endif %}
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            {% if form.password.errors %}
+                &lt;div style="color: red;"&gt;{{ form.password.errors }}&lt;/div&gt;
+            {% endif %}
+        &lt;/div&gt;
+        
+        &lt;button type="submit"&gt;Login&lt;/button&gt;
+        &lt;p&gt;New user? &lt;a href="{% url 'myapp:register' %}"&gt;Register here&lt;/a&gt;&lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <h3>dashboard.html - Protected View</h3>
+
+                <div class="code-title">templates/myapp/dashboard.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Dashboard&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    <span class=\"comment\">&lt;!-- Navigation bar showing user info --&gt;</span>
+    &lt;nav style="background: #667eea; color: white; padding: 10px;"&gt;
+        &lt;p&gt;👤 Logged in as: &lt;strong&gt;{{ request.user.username }}&lt;/strong&gt;&lt;/p&gt;
+        &lt;a href="{% url 'myapp:logout' %}" style="color: white;"&gt;Logout&lt;/a&gt;
+    &lt;/nav&gt;
+    
+    &lt;h1&gt;Welcome, {{ request.user.first_name }}!&lt;/h1&gt;
+    
+    <span class=\"comment\">&lt;!-- Show different content based on role --&gt;</span>
+    {% if request.user.profile.is_librarian %}
+        &lt;h2&gt;📚 Librarian Dashboard&lt;/h2&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="{% url 'myapp:book_list' %}"&gt;Manage Books&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="{% url 'myapp:student_list' %}"&gt;View Students&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="{% url 'myapp:issued_books_list' %}"&gt;Issued Books&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    {% elif request.user.profile.is_student %}
+        &lt;h2&gt;📖 Student Dashboard&lt;/h2&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="{% url 'myapp:book_list' %}"&gt;Browse Books&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="{% url 'myapp:student_detail' pk=request.user.profile.student.id %}"&gt;My Books&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+            </section>
+
+            <!-- SECURITY SECTION -->
+            <section id="security">
+                <h2>🔒 Phase 4: Security Features</h2>
+
+                <div class="important-box">
+                    <strong>Security in Phase 4:</strong>
+                    <ul>
+                        <li><strong>Password Hashing:</strong> Stored as hash, never plain text</li>
+                        <li><strong>CSRF Token:</strong> Required in all forms</li>
+                        <li><strong>Session Security:</strong> Session cookie is httponly</li>
+                        <li><strong>Password Validation:</strong> Minimum 8 characters</li>
+                        <li><strong>Unique Constraints:</strong> Username and email unique</li>
+                        <li><strong>SQL Injection:</strong> ORM prevents injection</li>
+                    </ul>
+                </div>
+
+                <h3>Password Hashing Example</h3>
+
+                <div class="code-title">How Django Hashes Passwords</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User
+
+<span class="comment"># When registering:</span>
+user = User(username='john')
+user.set_password('mypassword123')  <span class="comment\">\"\"\"HASHES password\"\"\"</span>
+<span class="comment\">\"\"\"
+Result in database:
+password = 'pbkdf2_sha256$260000$salt$hash'
+
+Password is NEVER stored as 'mypassword123'
+\"\"\"</span>
+
+<span class=\"comment\">\"\"\"When logging in:\"\"\"</span>
+user = authenticate(
+    username='john',
+    password='mypassword123'  <span class=\"comment\">\"\"\"User enters this\"\"\"</span>
+)
+<span class=\"comment\">\"\"\"
+Django:
+1. Gets user from database
+2. Gets stored hash: 'pbkdf2_sha256$260000$salt$hash'
+3. Hashes submitted password with same salt
+4. Compares hashes (NOT plain passwords)
+5. If match, login successful
+\"\"\"</span></code></pre></div>
+            </section>
+
+            <!-- DECORATORS SECTION -->
+            <section id="decorators">
+                <h2>🛡️ Login Required Decorators</h2>
+
+                <h3>Protecting Views</h3>
+
+                <div class="code-title">myapp/views.py - Using Decorators</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib.auth.decorators <span class="keyword">import</span> login_required
+
+<span class="comment\">\"\"\"
+@login_required decorator:
+- Redirects unauthenticated users to login
+- Only authenticated users can access view
+\"\"\"</span>
+
+@login_required(login_url='myapp:login')
+<span class=\"keyword\">def</span> student_detail(request, pk):
+    <span class=\"comment\">\"\"\"Only logged-in users can view this\"\"\"</span>
+    student = Student.objects.get(pk=pk)
+    <span class=\"keyword\">return</span> render(request, 'myapp/student_detail.html',
+        {'student': student})
+
+<span class=\"comment\">\"\"\"
+Example: Protecting role-based access
+\"\"\"</span>
+
+<span class=\"keyword\">def</span> librarian_only(view_func):
+    <span class=\"comment\">\"\"\"Custom decorator - only librarians can access\"\"\"</span>
+    <span class=\"keyword\">def</span> wrapper(request, *args, **kwargs):
+        <span class=\"keyword\">if</span> <span class=\"keyword\">not</span> request.user.is_authenticated:
+            <span class=\"keyword\">return</span> redirect('myapp:login')
+        
+        <span class=\"keyword\">if</span> <span class=\"keyword\">not</span> request.user.profile.is_librarian():
+            <span class=\"keyword\">return</span> redirect('myapp:dashboard')
+        
+        <span class=\"keyword\">return</span> view_func(request, *args, **kwargs)
+    <span class=\"keyword\">return</span> wrapper
+
+@librarian_only
+<span class=\"keyword\">def</span> issue_book(request, student_id):
+    <span class=\"comment\">\"\"\"Only librarians can issue books\"\"\"</span>
+    <span class=\"comment\"># ... implementation</span></code></pre></div>
+
+                <div class="code-description">
+                    <strong>📌 Decorator Types:</strong>
+                    <ul>
+                        <li><code>@login_required</code> - User must be authenticated</li>
+                        <li><code>@permission_required('app.permission')</code> - Specific permission needed</li>
+                        <li><code>@user_passes_test(test_func)</code> - Custom condition</li>
+                        <li>Custom decorators for role-based access</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- TESTING SECTION -->
+            <section id="testing">
+                <h2>✅ Phase 4 Testing Procedures</h2>
+
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Test User Registration</strong>
+                    <ul>
+                        <li>Visit /register/</li>
+                        <li>Fill form with valid data</li>
+                        <li>Verify user created in database</li>
+                        <li>Verify password is hashed (not plain text)</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Test User Login</strong>
+                    <ul>
+                        <li>Visit /login/</li>
+                        <li>Enter username and correct password</li>
+                        <li>Verify redirected to dashboard</li>
+                        <li>Verify request.user is set</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Test Invalid Login</strong>
+                    <ul>
+                        <li>Try login with wrong password</li>
+                        <li>Verify error message shown</li>
+                        <li>Verify NOT logged in</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">4</span>
+                    <strong>Test Protected Views</strong>
+                    <ul>
+                        <li>Try accessing /dashboard/ without login</li>
+                        <li>Verify redirected to login</li>
+                        <li>Login and access again</li>
+                        <li>Verify access granted</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Phase 4 Complete When:</strong>
+                    <ul>
+                        <li>Users can register with unique username/email</li>
+                        <li>Passwords are hashed (not plain text)</li>
+                        <li>Login works with correct password</li>
+                        <li>Login fails with wrong password</li>
+                        <li>Protected views require login</li>
+                        <li>Sessions work across requests</li>
+                        <li>Logout destroys session</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- COMPARISON SECTION -->
+            <section id="comparison">
+                <h2>📊 Phase 1-4 Progression</h2>
+
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Phase 1</th>
+                        <th>Phase 2</th>
+                        <th>Phase 3</th>
+                        <th>Phase 4</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Models</strong></td>
+                        <td>Book</td>
+                        <td>Book</td>
+                        <td>Student, IssuedBook</td>
+                        <td>User, UserProfile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Forms</strong></td>
+                        <td>BookForm</td>
+                        <td>BookForm (validated)</td>
+                        <td>StudentForm, IssueForm</td>
+                        <td>RegistrationForm, LoginForm</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authentication</strong></td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>Login/Logout/Register</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Control</strong></td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>@login_required, roles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>Beginner</td>
+                        <td>Intermediate</td>
+                        <td>Advanced</td>
+                        <td>Expert</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <footer>
+            <p>📝 <strong>Library Management System - Phase 4 (Updated)</strong></p>
+            <p>User Authentication & Session Management</p>
+            <p>© 2025 | November 17, 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.terminal-command').forEach(cmd => {
+            cmd.addEventListener('click', function() {
+                const text = this.innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = '✅ Copied!';
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                    }, 2000);
+                });
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

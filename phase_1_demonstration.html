@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 1 - Basic Book Management System with Backend Integration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        h4 {
+            color: #667eea;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .feature-box strong {
+            color: #667eea;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow-x: auto;
+            white-space: pre;
+            word-wrap: normal;
+        }
+
+        .code-block code {
+            background: transparent;
+            color: #f8f8f2;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            display: block;
+            white-space: pre;
+        }
+
+        .code-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            margin: 20px 0 0 0;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+
+        .code-description {
+            background: #e8f4f8;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .terminal-command {
+            background: #2d2d2d;
+            color: #00ff00;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #00ff00;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .terminal-command:hover {
+            background: #404040;
+        }
+
+        .learning-objective {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .learning-objective strong {
+            color: #28a745;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .tip-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .important-box {
+            background: #ffe7e7;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .navigation {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .navigation a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.9em;
+        }
+
+        .navigation a:hover {
+            color: #764ba2;
+            transform: translateX(10px);
+        }
+
+        @media (min-width: 1400px) {
+            .navigation {
+                display: block;
+            }
+        }
+
+        .step-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .string {
+            color: #e6db74;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .flow-diagram {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .template-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .template-box strong {
+            color: #ff6f00;
+        }
+
+        .backend-flow {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .backend-flow strong {
+            color: #1565c0;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Phase 1: Basic Book Management System</h1>
+            <p>Backend Integration & Frontend Template Explanations</p>
+        </header>
+
+        <div class="navigation">
+            <a href="#overview">Overview</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#backend-models">Backend: Models</a>
+            <a href="#backend-views">Backend: Views</a>
+            <a href="#backend-urls">Backend: URLs</a>
+            <a href="#backend-admin">Backend: Admin</a>
+            <a href="#templates">Templates Explained</a>
+            <a href="#data-flow">Data Flow</a>
+            <a href="#commands">Commands</a>
+            <a href="#testing">Testing</a>
+        </div>
+
+        <div class="content">
+            <!-- OVERVIEW SECTION -->
+            <section id="overview">
+                <h2>🎯 Phase 1 Overview & Project Structure</h2>
+                
+                <div class="learning-objective">
+                    <strong>What is Phase 1?</strong><br>
+                    Phase 1 introduces Django fundamentals through a simple book management system. You'll learn how the frontend (templates) communicates with the backend (views, models, and database) to create a complete web application.
+                </div>
+
+                <h3>How It Works: The Complete Flow</h3>
+
+                <div class="flow-diagram">User Request → URL Router → View Function → Model Query → 
+Template Rendering → HTML Response to Browser
+
+Example:
+1. User clicks "View All Books"
+2. Browser sends request to /books/
+3. Django URL router matches to views.book_list
+4. book_list view queries Book.objects.all()
+5. Data passed to book_list.html template
+6. HTML rendered with dynamic book data
+7. Styled HTML sent back to browser
+                </div>
+
+                <div class="backend-flow">
+                    <strong>🔧 Backend Components Working Together:</strong>
+                    <ul>
+                        <li><strong>models.py</strong> - Defines Book structure (name, author, quantity, etc.)</li>
+                        <li><strong>views.py</strong> - Functions that process requests and query models</li>
+                        <li><strong>urls.py</strong> - Routes URLs to view functions</li>
+                        <li><strong>templates/</strong> - HTML files that display the data</li>
+                        <li><strong>admin.py</strong> - Django admin registration for data management</li>
+                    </ul>
+                </div>
+
+                <div class="important-box">
+                    <strong>⚠️ Key Concept:</strong> Templates are NOT just static HTML. They're dynamic documents that receive data from views and render it in real-time. Each template corresponds to a specific view function.
+                </div>
+            </section>
+
+            <!-- ARCHITECTURE SECTION -->
+            <section id="architecture">
+                <h2>🏗️ Phase 1 Architecture</h2>
+
+                <h3>Complete Project Structure</h3>
+
+                <div class="code-block"><pre><code>phase_1/
+├── manage.py                 # Django management script
+├── phase_1/                  # Project configuration folder
+│   ├── settings.py          # Project settings (database, apps, etc.)
+│   ├── urls.py              # Main URL routing
+│   ├── asgi.py              # ASGI configuration
+│   └── wsgi.py              # WSGI configuration
+├── myapp/                    # Our application
+│   ├── models.py            # Database models
+│   ├── views.py             # View functions
+│   ├── urls.py              # App URL routing
+│   ├── forms.py             # Django forms
+│   ├── admin.py             # Admin registration
+│   ├── apps.py              # App configuration
+│   └── migrations/          # Database migrations
+├── templates/
+│   └── myapp/               # Phase 1 templates
+│       ├── book_list.html        # Display all books
+│       ├── book_form.html        # Add/Edit book
+│       ├── book_detail.html      # View single book
+│       └── book_confirm_delete.html  # Delete confirmation
+└── db.sqlite3               # SQLite database</code></pre></div>
+
+                <div class="tip-box">
+                    <strong>💡 Important:</strong> Each template file directly corresponds to a view function and displays data from a specific model.
+                </div>
+            </section>
+
+            <!-- BACKEND MODELS SECTION -->
+            <section id="backend-models">
+                <h2>🗄️ Backend: Database Models (models.py)</h2>
+
+                <div class="backend-flow">
+                    <strong>What Models Do:</strong> Models define the structure of your database tables. Django converts Python classes into SQL tables automatically.
+                </div>
+
+                <h3>The Book Model - Core of Phase 1</h3>
+
+                <div class="code-title">myapp/models.py - Book Model Definition</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.db <span class="keyword">import</span> models
+
+<span class="keyword">class</span> Book(models.Model):
+    <span class="comment\"># Book title - stored as text in database</span>
+    title = models.CharField(
+        max_length=200,
+        help_text=<span class="string\">\"Enter book title\"</span>
+    )
+    
+    <span class="comment\"># Author name</span>
+    author = models.CharField(
+        max_length=100,
+        help_text=<span class="string\">\"Enter author name\"</span>
+    )
+    
+    <span class="comment\"># ISBN - unique identifier</span>
+    isbn = models.CharField(
+        max_length=13,
+        unique=True,
+        help_text=<span class="string\">\"Enter 13-digit ISBN\"</span>
+    )
+    
+    <span class="comment\"># How many copies in inventory</span>
+    quantity = models.IntegerField(
+        default=1,
+        help_text=<span class="string\">\"Number of copies available\"</span>
+    )
+    
+    <span class="comment\"># When was it published</span>
+    publication_date = models.DateField(
+        help_text=<span class="string\">\"Select publication date\"</span>
+    )
+    
+    <span class="comment\"># Longer book description</span>
+    description = models.TextField(
+        blank=True,
+        help_text=<span class="string\">\"Optional: Book summary\"</span>
+    )
+    
+    <span class="comment\"># When this record was created in database</span>
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    <span class="comment\"># Last time this record was updated</span>
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    <span class="comment\"># How book appears in admin and lists</span>
+    <span class=\"keyword\">def</span> __str__(self):
+        <span class=\"keyword\">return</span> f<span class=\"string\">\"{self.title} by {self.author}\"</span>
+    
+    <span class=\"comment\"># Metadata for model</span>
+    <span class=\"keyword\">class</span> Meta:
+        ordering = [<span class=\"string\">'-created_at'</span>]  <span class=\"comment\"># Newest first</span>
+        verbose_name = <span class=\"string\">\"Book\"</span>
+        verbose_name_plural = <span class=\"string\">\"Books\"</span></code></pre></div>
+
+                <div class="code-description">
+                    <strong>📝 Model Field Explanation:</strong>
+                    <ul>
+                        <li><code>CharField</code> - Short text (max 200 chars)</li>
+                        <li><code>IntegerField</code> - Whole numbers (quantity)</li>
+                        <li><code>DateField</code> - Dates only (publication_date)</li>
+                        <li><code>TextField</code> - Long text (description)</li>
+                        <li><code>DateTimeField</code> - Date + time (created_at)</li>
+                        <li><code>unique=True</code> - No duplicate ISBNs allowed</li>
+                        <li><code>auto_now_add=True</code> - Automatically set when created</li>
+                        <li><code>auto_now=True</code> - Automatically update on save</li>
+                    </ul>
+                </div>
+
+                <h3>Database Table Created from Model</h3>
+
+                <div class="feature-box">
+                    <strong>When you run migrations, Django creates a table like this:</strong>
+                    <table>
+                        <tr>
+                            <th>id</th>
+                            <th>title</th>
+                            <th>author</th>
+                            <th>isbn</th>
+                            <th>quantity</th>
+                            <th>publication_date</th>
+                            <th>created_at</th>
+                            <th>updated_at</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Django for Beginners</td>
+                            <td>John Doe</td>
+                            <td>9781234567890</td>
+                            <td>5</td>
+                            <td>2023-01-15</td>
+                            <td>2025-01-10 10:30:00</td>
+                            <td>2025-01-15 14:20:00</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <!-- BACKEND VIEWS SECTION -->
+            <section id="backend-views">
+                <h2>🎬 Backend: View Functions (views.py)</h2>
+
+                <div class="backend-flow">
+                    <strong>What Views Do:</strong> Views are Python functions that receive HTTP requests, query the database using models, and return HTML responses (using templates).
+                </div>
+
+                <h3>View 1: List All Books</h3>
+
+                <div class="code-title">myapp/views.py - book_list Function</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.shortcuts import render
+<span class="keyword">from</span> .models import Book
+
+<span class="comment\"># View: Display all books</span>
+<span class=\"keyword\">def</span> book_list(request):
+    <span class=\"comment\">\"\"\" 
+    Fetches all books from database and passes to template
+    
+    REQUEST FLOW:
+    1. User clicks /books/
+    2. Django routes to this function
+    3. We query database: Book.objects.all()
+    4. We render template with books data
+    5. HTML sent back to browser
+    \"\"\"</span>
+    
+    <span class=\"comment\"># Query database for all books</span>
+    books = Book.objects.all()
+    
+    <span class=\"comment\"># Data to pass to template</span>
+    context = {
+        'books': books,  <span class=\"comment\"># Available in template as {{ books }}</span>
+        'count': books.count()  <span class=\"comment\"># Available as {{ count }}</span>
+    }
+    
+    <span class=\"comment\"># Render template with data</span>
+    <span class=\"keyword\">return</span> render(request, <span class=\"string\">\"myapp/book_list.html\"</span>, context)</code></pre></div>
+
+                <div class="code-description">
+                    <strong>🔍 Step-by-Step Breakdown:</strong>
+                    <ol>
+                        <li><code>Book.objects.all()</code> - Queries database, returns all books</li>
+                        <li><code>context = {}</code> - Dictionary of data for template</li>
+                        <li><code>render()</code> - Combines template + data into HTML</li>
+                        <li>Template receives <code>books</code> and <code>count</code> variables</li>
+                    </ol>
+                </div>
+
+                <h3>View 2: Create New Book</h3>
+
+                <div class="code-title">myapp/views.py - create_book Function</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.shortcuts import render, redirect
+<span class="keyword">from</span> django.contrib import messages
+
+<span class=\"comment\"># View: Add new book to database</span>
+<span class=\"keyword\">def</span> create_book(request):
+    <span class=\"comment\">\"\"\"
+    GET: Shows empty form
+    POST: Saves new book to database
+    \"\"\"</span>
+    
+    <span class=\"keyword\">if</span> request.method == <span class=\"string\">\"POST\"</span>:
+        <span class=\"comment\"># Form submitted - extract data</span>
+        title = request.POST.get(<span class=\"string\">\"title\"</span>)
+        author = request.POST.get(<span class=\"string\">\"author\"</span>)
+        isbn = request.POST.get(<span class=\"string\">\"isbn\"</span>)
+        quantity = request.POST.get(<span class=\"string\">\"quantity\"</span>)
+        publication_date = request.POST.get(<span class=\"string\">\"publication_date\"</span>)
+        description = request.POST.get(<span class=\"string\">\"description\"</span>, <span class=\"string\">\"\"</span>)
+        
+        <span class=\"comment\"># Create new book record in database</span>
+        book = Book.objects.create(
+            title=title,
+            author=author,
+            isbn=isbn,
+            quantity=int(quantity),
+            publication_date=publication_date,
+            description=description
+        )
+        
+        <span class=\"comment\"># Show success message</span>
+        messages.success(request, f<span class=\"string\">\"Book '{title}' added successfully!\"</span>)
+        
+        <span class=\"comment\"># Redirect to book list</span>
+        <span class=\"keyword\">return</span> redirect(<span class=\"string\">\"myapp:book_list\"</span>)
+    
+    <span class=\"comment\"># GET request - show empty form</span>
+    <span class=\"keyword\">return</span> render(request, <span class=\"string\">\"myapp/book_form.html\"</span>, {
+        'title': <span class=\"string\">\"Add New Book\"</span>
+    })</code></pre></div>
+
+                <div class="code-description">
+                    <strong>🔄 Request Processing Flow:</strong>
+                    <ul>
+                        <li><strong>GET Request:</strong> User visits /add-book/ → Shows empty form</li>
+                        <li><strong>POST Request:</strong> User submits form → Saves to database</li>
+                        <li><code>request.POST.get()</code> - Extracts form data</li>
+                        <li><code>Book.objects.create()</code> - Inserts new row in database</li>
+                        <li><code>redirect()</code> - Takes user to book list after save</li>
+                    </ul>
+                </div>
+
+                <h3>View 3: View Single Book</h3>
+
+                <div class="code-title">myapp/views.py - book_detail Function</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.shortcuts import get_object_or_404
+
+<span class=\"comment\"># View: Show details of one book</span>
+<span class=\"keyword\">def</span> book_detail(request, pk):
+    <span class=\"comment\">\"\"\"
+    Get specific book by ID (pk)
+    If not found, show 404 error page
+    \"\"\"</span>
+    
+    <span class=\"comment\"># Find book with this ID, or show 404</span>
+    book = get_object_or_404(Book, pk=pk)
+    
+    context = {'book': book}
+    
+    <span class=\"keyword\">return</span> render(request, <span class=\"string\">\"myapp/book_detail.html\"</span>, context)</code></pre></div>
+
+                <div class="code-description">
+                    <strong>📖 Key Function:</strong>
+                    <ul>
+                        <li><code>pk</code> parameter comes from URL (e.g., /book/1/ → pk=1)</li>
+                        <li><code>get_object_or_404()</code> - Safely retrieves single book</li>
+                        <li>If book doesn't exist, Django shows 404 error page</li>
+                    </ul>
+                </div>
+
+                <h3>View 4: Edit Book</h3>
+
+                <div class="code-title">myapp/views.py - edit_book Function</div>
+                <div class="code-block"><pre><code><span class=\"comment\"># View: Update existing book</span>
+<span class=\"keyword\">def</span> edit_book(request, pk):
+    <span class=\"comment\">\"\"\"
+    GET: Show form filled with current data
+    POST: Update database with new data
+    \"\"\"</span>
+    
+    book = get_object_or_404(Book, pk=pk)
+    
+    <span class=\"keyword\">if</span> request.method == <span class=\"string\">\"POST\"</span>:
+        <span class=\"comment\"># Update fields</span>
+        book.title = request.POST.get(<span class=\"string\">\"title\"</span>)
+        book.author = request.POST.get(<span class=\"string\">\"author\"</span>)
+        book.quantity = int(request.POST.get(<span class=\"string\">\"quantity\"</span>))
+        book.description = request.POST.get(<span class=\"string\">\"description\"</span>, <span class=\"string\">\"\"</span>)
+        
+        <span class=\"comment\"># Save changes to database</span>
+        book.save()
+        
+        messages.success(request, <span class=\"string\">\"Book updated successfully!\"</span>)
+        <span class=\"keyword\">return</span> redirect(<span class=\"string\">\"myapp:book_detail\"</span>, pk=book.pk)
+    
+    <span class=\"comment\"># GET - show form with current data</span>
+    context = {
+        'book': book,
+        'title': <span class=\"string\">\"Edit Book\"</span>
+    }
+    <span class=\"keyword\">return</span> render(request, <span class=\"string\">\"myapp/book_form.html\"</span>, context)</code></pre></div>
+
+                <h3>View 5: Delete Book</h3>
+
+                <div class="code-title">myapp/views.py - delete_book Function</div>
+                <div class="code-block"><pre><code><span class=\"comment\"># View: Delete book with confirmation</span>
+<span class=\"keyword\">def</span> delete_book(request, pk):
+    <span class=\"comment\">\"\"\"
+    GET: Show confirmation page
+    POST: Actually delete the book
+    \"\"\"</span>
+    
+    book = get_object_or_404(Book, pk=pk)
+    
+    <span class=\"keyword\">if</span> request.method == <span class=\"string\">\"POST\"</span>:
+        book_title = book.title
+        book.delete()  <span class=\"comment\"># Remove from database</span>
+        messages.success(request, f<span class=\"string\">\"Book '{book_title}' deleted!\"</span>)
+        <span class=\"keyword\">return</span> redirect(<span class=\"string\">\"myapp:book_list\"</span>)
+    
+    <span class=\"comment\"># GET - show confirmation page</span>
+    <span class=\"keyword\">return</span> render(request, <span class=\"string\">\"myapp/book_confirm_delete.html\"</span>, 
+        {'book': book})</code></pre></div>
+            </section>
+
+            <!-- BACKEND URLS SECTION -->
+            <section id="backend-urls">
+                <h2>🔗 Backend: URL Routing (urls.py)</h2>
+
+                <div class="backend-flow">
+                    <strong>What URLs Do:</strong> URLs map web addresses to view functions. When you visit /books/, Django looks for matching URL pattern and calls the corresponding view.
+                </div>
+
+                <div class="code-title">myapp/urls.py - URL Patterns</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.urls import path
+<span class="keyword">from</span> . import views
+
+app_name = <span class="string\">\"myapp\"</span>  <span class="comment\"># URL namespace</span>
+
+urlpatterns = [
+    <span class=\"comment\"># SHOW ALL BOOKS</span>
+    <span class=\"comment\"># URL: /books/</span>
+    <span class=\"comment\"># Function: views.book_list</span>
+    path(<span class=\"string\">\"books/\"</span>, views.book_list, name=<span class=\"string\">\"book_list\"</span>),
+    
+    <span class=\"comment\"># SHOW SINGLE BOOK DETAILS</span>
+    <span class=\"comment\"># URL: /book/1/, /book/5/ etc.</span>
+    <span class=\"comment\"># pk parameter passes book ID to view</span>
+    path(<span class=\"string\">\"book/<int:pk>/\"</span>, views.book_detail, name=<span class=\"string\">\"book_detail\"</span>),
+    
+    <span class=\"comment\"># ADD NEW BOOK</span>
+    <span class=\"comment\"># URL: /add-book/</span>
+    path(<span class=\"string\">\"add-book/\"</span>, views.create_book, name=<span class=\"string\">\"create_book\"</span>),
+    
+    <span class=\"comment\"># EDIT BOOK</span>
+    <span class=\"comment\"># URL: /book/1/edit/, /book/5/edit/ etc.</span>
+    path(<span class=\"string\">\"book/<int:pk>/edit/\"</span>, views.edit_book, name=<span class=\"string\">\"edit_book\"</span>),
+    
+    <span class=\"comment\"># DELETE BOOK</span>
+    <span class=\"comment\"># URL: /book/1/delete/, /book/5/delete/ etc.</span>
+    path(<span class=\"string\">\"book/<int:pk>/delete/\"</span>, views.delete_book, name=<span class=\"string\">\"delete_book\"</span>),
+]</code></pre></div>
+
+                <div class="code-description">
+                    <strong>🔍 URL Pattern Breakdown:</strong>
+                    <ul>
+                        <li><code>path()</code> - Matches exact URL string</li>
+                        <li><code>&lt;int:pk&gt;</code> - Captures number from URL and passes to view</li>
+                        <li><code>name=</code> - Django references URL by name (not hardcoded string)</li>
+                        <li><code>app_name</code> - Namespace to avoid name conflicts</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 URL Naming Convention:</strong> Use <code>{% url 'myapp:book_detail' pk=book.id %}</code> in templates instead of hardcoding URLs. If you change the URL pattern, templates still work!
+                </div>
+            </section>
+
+            <!-- BACKEND ADMIN SECTION -->
+            <section id="backend-admin">
+                <h2>👨‍💼 Backend: Django Admin (admin.py)</h2>
+
+                <div class="backend-flow">
+                    <strong>What Admin Does:</strong> Django's built-in admin panel lets you manage database records through a web interface without writing frontend code.
+                </div>
+
+                <div class="code-title">myapp/admin.py - Register Book Model</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib import admin
+<span class="keyword">from</span> .models import Book
+
+<span class="comment\"># Option 1: Simple registration</span>
+admin.site.register(Book)
+
+<span class=\"comment\"># Option 2: Customized admin (recommended)</span>
+@admin.register(Book)
+<span class=\"keyword\">class</span> BookAdmin(admin.ModelAdmin):
+    <span class=\"comment\"># Columns shown in list view</span>
+    list_display = [<span class=\"string\">\"title\"</span>, <span class=\"string\">\"author\"</span>, <span class=\"string\">\"isbn\"</span>, 
+                    <span class=\"string\">\"quantity\"</span>, <span class=\"string\">\"created_at\"</span>]
+    
+    <span class=\"comment\"># Add filters on right side</span>
+    list_filter = [<span class=\"string\">\"created_at\"</span>, <span class=\"string\">\"author\"</span>]
+    
+    <span class=\"comment\"># Add search box</span>
+    search_fields = [<span class=\"string\">\"title\"</span>, <span class=\"string\">\"author\"</span>, <span class=\"string\">\"isbn\"</span>]
+    
+    <span class=\"comment\"># Read-only fields (cannot edit)</span>
+    readonly_fields = [<span class=\"string\">\"created_at\"</span>, <span class=\"string\">\"updated_at\"</span>]
+    
+    <span class=\"comment\"># Group fields in form</span>
+    fieldsets = (
+        (<span class=\"string\">\"Book Information\"</span>, {
+            'fields': (<span class=\"string\">\"title\"</span>, <span class=\"string\">\"author\"</span>, <span class=\"string\">\"isbn\"</span>)
+        }),
+        (<span class=\"string\">\"Inventory\"</span>, {
+            'fields': (<span class=\"string\">\"quantity\"</span>, <span class=\"string\">\"publication_date\"</span>)
+        }),
+        (<span class=\"string\">\"Details\"</span>, {
+            'fields': (<span class=\"string\">\"description\"</span>, <span class=\"string\">\"created_at\"</span>, <span class=\"string\">\"updated_at\"</span>)
+        }),
+    )</code></pre></div>
+
+                <div class="code-description">
+                    <strong>🎯 Admin Features:</strong>
+                    <ul>
+                        <li><code>list_display</code> - What columns show in list view</li>
+                        <li><code>search_fields</code> - Makes fields searchable</li>
+                        <li><code>list_filter</code> - Add filters for quick sorting</li>
+                        <li><code>readonly_fields</code> - Prevent editing of certain fields</li>
+                        <li><code>fieldsets</code> - Organize form into sections</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Access Django Admin:</strong>
+                    <ol>
+                        <li>Run: <code>python manage.py runserver</code></li>
+                        <li>Visit: <code>http://127.0.0.1:8000/admin/</code></li>
+                        <li>Login with superuser credentials</li>
+                        <li>Click "Books" to manage all books</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- TEMPLATES SECTION -->
+            <section id="templates">
+                <h2>🎨 Frontend: Templates Explained</h2>
+
+                <div class="template-box">
+                    <strong>📄 What Templates Are:</strong> Templates are HTML files that receive data from views and render it dynamically. They bridge backend (Python/database) and frontend (HTML/CSS).
+                </div>
+
+                <h3>Template 1: book_list.html - Display All Books</h3>
+
+                <div class="code-title">templates/myapp/book_list.html - Show All Books</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Books - Phase 1&lt;/title&gt;
+    &lt;style&gt;
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #667eea; color: white; }
+        tr:hover { background-color: #f5f5f5; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;📚 All Books&lt;/h1&gt;
+    
+    <span class=\"comment\">&lt;!-- Link to add new book --&gt;</span>
+    &lt;a href="{% url 'myapp:create_book' %}"&gt;➕ Add New Book&lt;/a&gt;
+    
+    <span class=\"comment\">&lt;!-- Check if books exist --&gt;</span>
+    {% if books %}
+        &lt;p&gt;Total Books: {{ count }}&lt;/p&gt;
+        
+        <span class=\"comment\">&lt;!-- Loop through each book from view --&gt;</span>
+        &lt;table&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Title&lt;/th&gt;
+                    &lt;th&gt;Author&lt;/th&gt;
+                    &lt;th&gt;ISBN&lt;/th&gt;
+                    &lt;th&gt;Quantity&lt;/th&gt;
+                    &lt;th&gt;Actions&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                <span class=\"comment\">&lt;!-- Loop: iterate through books list --&gt;</span>
+                {% for book in books %}
+                    &lt;tr&gt;
+                        <span class=\"comment\">&lt;!-- book.title comes from database --&gt;</span>
+                        &lt;td&gt;&lt;a href="{% url 'myapp:book_detail' pk=book.id %}"&gt;
+                            {{ book.title }}&lt;/a&gt;&lt;/td&gt;
+                        
+                        <span class=\"comment\">&lt;!-- book.author from database --&gt;</span>
+                        &lt;td&gt;{{ book.author }}&lt;/td&gt;
+                        &lt;td&gt;{{ book.isbn }}&lt;/td&gt;
+                        &lt;td&gt;{{ book.quantity }}&lt;/td&gt;
+                        &lt;td&gt;
+                            <span class=\"comment\">&lt;!-- Links to edit/delete --&gt;</span>
+                            &lt;a href="{% url 'myapp:edit_book' pk=book.id %}"&gt;Edit&lt;/a&gt;
+                            &lt;a href="{% url 'myapp:delete_book' pk=book.id %}"&gt;Delete&lt;/a&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                {% endfor %}
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    {% else %}
+        <span class=\"comment\">&lt;!-- If no books exist --&gt;</span>
+        &lt;p&gt;No books in library. &lt;a href="{% url 'myapp:create_book' %}"&gt;Add one now!&lt;/a&gt;&lt;/p&gt;
+    {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <div class="code-description">
+                    <strong>🔍 Template Syntax Breakdown:</strong>
+                    <ul>
+                        <li><code>{{ variable }}</code> - Displays value from context</li>
+                        <li><code>{% if condition %}</code> - Conditional rendering</li>
+                        <li><code>{% for item in list %}</code> - Loop through lists</li>
+                        <li><code>{% url 'name' %}</code> - Generate URL by name (from urls.py)</li>
+                        <li><code><!-- comment --></code> - HTML comments (not shown to user)</li>
+                    </ul>
+                </div>
+
+                <div class="backend-flow">
+                    <strong>📊 Backend Integration:</strong>
+                    <ul>
+                        <li>View sends <code>books</code> list in context</li>
+                        <li>Template loops: <code>{% for book in books %}</code></li>
+                        <li>Each iteration accesses: <code>book.title</code>, <code>book.author</code>, etc.</li>
+                        <li>Django renders to HTML and sends to browser</li>
+                    </ul>
+                </div>
+
+                <h3>Template 2: book_form.html - Add/Edit Book</h3>
+
+                <div class="code-title">templates/myapp/book_form.html - Form for Create/Edit</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;{{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;{{ title }}&lt;/h1&gt;
+    
+    <span class=\"comment\">&lt;!-- Form submits to same view (GET shows form, POST saves) --&gt;</span>
+    &lt;form method="POST"&gt;
+        <span class=\"comment\">&lt;!-- Django security token --&gt;</span>
+        {% csrf_token %}
+        
+        <span class=\"comment\">&lt;!-- Title field --&gt;</span>
+        &lt;label&gt;Title:&lt;/label&gt;
+        &lt;input type="text" name="title" 
+            value="{% if book %}{{ book.title }}{% endif %}" required&gt;
+        &lt;br&gt;
+        
+        <span class=\"comment\">&lt;!-- Author field --&gt;</span>
+        &lt;label&gt;Author:&lt;/label&gt;
+        &lt;input type="text" name="author" 
+            value="{% if book %}{{ book.author }}{% endif %}" required&gt;
+        &lt;br&gt;
+        
+        <span class=\"comment\">&lt;!-- ISBN field --&gt;</span>
+        &lt;label&gt;ISBN:&lt;/label&gt;
+        &lt;input type="text" name="isbn" maxlength="13"
+            value="{% if book %}{{ book.isbn }}{% endif %}" required&gt;
+        &lt;br&gt;
+        
+        <span class=\"comment\">&lt;!-- Quantity field --&gt;</span>
+        &lt;label&gt;Quantity:&lt;/label&gt;
+        &lt;input type="number" name="quantity" value="{% if book %}{{ book.quantity }}{% else %}1{% endif %}" required&gt;
+        &lt;br&gt;
+        
+        <span class=\"comment\">&lt;!-- Publication date --&gt;</span>
+        &lt;label&gt;Publication Date:&lt;/label&gt;
+        &lt;input type="date" name="publication_date" 
+            value="{% if book %}{{ book.publication_date|date:'Y-m-d' }}{% endif %}" required&gt;
+        &lt;br&gt;
+        
+        <span class=\"comment\">&lt;!-- Description --&gt;</span>
+        &lt;label&gt;Description:&lt;/label&gt;
+        &lt;textarea name="description"&gt;{% if book %}{{ book.description }}{% endif %}&lt;/textarea&gt;
+        &lt;br&gt;
+        
+        <span class=\"comment\">&lt;!-- Submit button --&gt;</span>
+        &lt;button type="submit"&gt;{% if book %}Update{% else %}Add{% endif %} Book&lt;/button&gt;
+        &lt;a href="{% url 'myapp:book_list' %}"&gt;Cancel&lt;/a&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <div class="code-description">
+                    <strong>📋 Form Template Features:</strong>
+                    <ul>
+                        <li><code>method="POST"</code> - Sends data to backend for processing</li>
+                        <li><code>{% csrf_token %}</code> - Security token (required for POST)</li>
+                        <li><code>name="title"</code> - Field name matches view's <code>request.POST.get('title')</code></li>
+                        <li><code>value="{% if book %}"</code> - Pre-fills form when editing</li>
+                        <li>Same template used for create (empty) and edit (filled)</li>
+                    </ul>
+                </div>
+
+                <h3>Template 3: book_detail.html - View Single Book</h3>
+
+                <div class="code-title">templates/myapp/book_detail.html - Book Details Page</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;{{ book.title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    <span class=\"comment\">&lt;!-- Display single book object --&gt;</span>
+    &lt;h1&gt;{{ book.title }}&lt;/h1&gt;
+    
+    <span class=\"comment\">&lt;!-- All book fields accessible --&gt;</span>
+    &lt;div class="book-details"&gt;
+        &lt;p&gt;&lt;strong&gt;Author:&lt;/strong&gt; {{ book.author }}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;ISBN:&lt;/strong&gt; {{ book.isbn }}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Quantity:&lt;/strong&gt; {{ book.quantity }}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Published:&lt;/strong&gt; {{ book.publication_date|date:"F d, Y" }}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Added:&lt;/strong&gt; {{ book.created_at|date:"F d, Y H:i" }}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Description:&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;{{ book.description }}&lt;/p&gt;
+    &lt;/div&gt;
+    
+    <span class=\"comment\">&lt;!-- Action buttons --&gt;</span>
+    &lt;div&gt;
+        &lt;a href="{% url 'myapp:edit_book' pk=book.id %}"&gt;✏️ Edit&lt;/a&gt;
+        &lt;a href="{% url 'myapp:delete_book' pk=book.id %}"&gt;🗑️ Delete&lt;/a&gt;
+        &lt;a href="{% url 'myapp:book_list' %}"&gt;← Back to List&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <h3>Template 4: book_confirm_delete.html - Delete Confirmation</h3>
+
+                <div class="code-title">templates/myapp/book_confirm_delete.html - Confirm Before Delete</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Confirm Delete&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    <span class=\"comment\">&lt;!-- Warning message --&gt;</span>
+    &lt;h2&gt;⚠️ Delete Book?&lt;/h2&gt;
+    &lt;p&gt;Are you sure you want to delete "{{ book.title }}"?&lt;/p&gt;
+    &lt;p&gt;This action cannot be undone.&lt;/p&gt;
+    
+    <span class=\"comment\">&lt;!-- Confirmation form --&gt;</span>
+    &lt;form method="POST"&gt;
+        {% csrf_token %}
+        &lt;button type="submit" class="btn-danger"&gt;Yes, Delete It&lt;/button&gt;
+    &lt;/form&gt;
+    
+    &lt;!-- Cancel button --&gt;
+    &lt;a href="{% url 'myapp:book_detail' pk=book.id %}"&gt;No, Go Back&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <div class="tip-box">
+                    <strong>💡 Best Practice:</strong> Always ask for confirmation before deleting. This template uses POST (not direct deletion on GET) to prevent accidental deletes from link clicks.
+                </div>
+            </section>
+
+            <!-- DATA FLOW SECTION -->
+            <section id="data-flow">
+                <h2>🔄 Complete Data Flow: Request to Response</h2>
+
+                <div class="flow-diagram">
+COMPLETE PHASE 1 DATA FLOW
+═══════════════════════════
+
+User clicks "Add New Book" link
+        ↓
+Browser sends GET request to /add-book/
+        ↓
+Django router matches URL pattern (urls.py)
+        ↓
+Calls views.create_book(request)
+        ↓
+request.method == "GET" → return empty form
+        ↓
+Render book_form.html template
+        ↓
+HTML form sent to browser with input fields
+        ↓
+User fills form and clicks "Add"
+        ↓
+Browser sends POST request with form data
+        ↓
+Django router calls views.create_book(request) again
+        ↓
+request.method == "POST" → Extract form data
+        ↓
+request.POST.get('title'), request.POST.get('author'), etc.
+        ↓
+Book.objects.create() → INSERT into database
+        ↓
+Show success message
+        ↓
+redirect('myapp:book_list')
+        ↓
+Browser now requests /books/
+        ↓
+Calls views.book_list(request)
+        ↓
+Book.objects.all() → SELECT from database
+        ↓
+Pass books to book_list.html template
+        ↓
+Template loops {% for book in books %} and displays each
+        ↓
+HTML table sent to browser
+        ↓
+User sees new book in list!
+                </div>
+
+                <div class="important-box">
+                    <strong>⚠️ Key Concept:</strong> Every request goes through this cycle. The browser doesn't access the database directly - always through Django views!
+                </div>
+            </section>
+
+            <!-- COMMANDS SECTION -->
+            <section id="commands">
+                <h2>⚙️ Phase 1 Setup & Commands</h2>
+
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Create Django Project</strong>
+                </div>
+
+                <div class="terminal-command">django-admin startproject phase_1</div>
+
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Create Django App</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py startapp myapp</div>
+
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Create Migrations from Models</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py makemigrations</div>
+
+                <div class="code-description">
+                    <strong>What it does:</strong> Reads models.py and creates migration files that describe database schema changes.
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">4</span>
+                    <strong>Apply Migrations to Database</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py migrate</div>
+
+                <div class="code-description">
+                    <strong>What it does:</strong> Executes migration files and creates actual database tables.
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">5</span>
+                    <strong>Create Superuser (Admin)</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py createsuperuser</div>
+
+                <div class="code-description">
+                    <strong>What it does:</strong> Creates admin account to login to Django admin panel.
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">6</span>
+                    <strong>Run Development Server</strong>
+                </div>
+
+                <div class="terminal-command">python manage.py runserver</div>
+
+                <div class="code-description">
+                    <strong>Access at:</strong> http://127.0.0.1:8000/admin/ (login with superuser) or http://127.0.0.1:8000/books/
+                </div>
+            </section>
+
+            <!-- TESTING SECTION -->
+            <section id="testing">
+                <h2>✅ Phase 1 Testing Procedures</h2>
+
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Test Add Book</strong>
+                    <ol>
+                        <li>Visit http://127.0.0.1:8000/add-book/</li>
+                        <li>Fill in all fields</li>
+                        <li>Click "Add Book"</li>
+                        <li>Verify redirected to book list</li>
+                        <li>Verify new book appears in table</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Test View Books</strong>
+                    <ol>
+                        <li>Visit http://127.0.0.1:8000/books/</li>
+                        <li>Verify all books display in table</li>
+                        <li>Verify count shows correct number</li>
+                        <li>Click on book title</li>
+                        <li>Verify book detail page shows all fields</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Test Edit Book</strong>
+                    <ol>
+                        <li>Go to book detail page</li>
+                        <li>Click "Edit"</li>
+                        <li>Change some fields</li>
+                        <li>Click "Update Book"</li>
+                        <li>Verify changes saved in database</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">4</span>
+                    <strong>Test Delete Book</strong>
+                    <ol>
+                        <li>Go to book detail page</li>
+                        <li>Click "Delete"</li>
+                        <li>Verify confirmation page shown</li>
+                        <li>Click "Yes, Delete It"</li>
+                        <li>Verify book removed from list</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">5</span>
+                    <strong>Test Django Admin</strong>
+                    <ol>
+                        <li>Visit http://127.0.0.1:8000/admin/</li>
+                        <li>Login with superuser</li>
+                        <li>Click "Books"</li>
+                        <li>Add/edit/delete books through admin</li>
+                        <li>Verify changes appear in frontend</li>
+                    </ol>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Phase 1 Complete When:</strong>
+                    <ul>
+                        <li>All CRUD operations work correctly</li>
+                        <li>Database properly stores/retrieves data</li>
+                        <li>Admin panel fully functional</li>
+                        <li>No errors in console</li>
+                        <li>All templates display correctly</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>📚 <strong>Library Management System - Phase 1 (Updated)</strong></p>
+            <p>Complete Backend Integration & Template Explanations</p>
+            <p>© 2025 | November 17, 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Copy-to-clipboard functionality
+        document.querySelectorAll('.terminal-command').forEach(cmd => {
+            cmd.addEventListener('click', function() {
+                const text = this.innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = '✅ Copied!';
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                    }, 2000);
+                });
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

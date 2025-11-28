@@ -1,0 +1,54 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django-specific files
+*.log
+*.pot
+db.sqlite3
+media/ # User-uploaded media files
+static_collected/ # Collected static files (if using collectstatic)
+local_settings.py # Or any other local settings file not meant for production
+migrations/00*.py # If you are squashing migrations and don't want to track all individual migration files
+
+# Virtual environment
+.env/
+venv/
+env/
+
+# IDE-specific files (e.g., PyCharm)
+.idea/
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+.coverage
+.tox/
+
+# Pipenv files (if used)
+Pipfile.lock # Recommended to include, but can be ignored if desired

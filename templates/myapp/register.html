@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Library Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .role-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .role-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .role-tab:hover {
+            color: #667eea;
+        }
+        
+        .role-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .role-tab a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input::placeholder {
+            color: #999;
+        }
+        
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-register:active {
+            transform: translateY(0);
+        }
+        
+        .login-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .login-section a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        .error-list {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .error-list ul {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+        
+        .error-list li {
+            margin-bottom: 5px;
+        }
+        
+        .form-error {
+            display: block;
+            color: #721c24;
+            font-size: 0.85em;
+            margin-top: 5px;
+            background: #f8d7da;
+            padding: 8px;
+            border-radius: 3px;
+            border-left: 3px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo">📚</div>
+            <h1>Library System</h1>
+            <p class="subtitle">Create your account</p>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Role Selection Tabs -->
+        <div class="role-tabs">
+            <div class="role-tab {% if role == 'student' %}active{% endif %}">
+                <a href="?role=student">👤 Student</a>
+            </div>
+            <div class="role-tab {% if role == 'librarian' %}active{% endif %}">
+                <a href="?role=librarian">📚 Librarian</a>
+            </div>
+        </div>
+        
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="role" value="{{ role }}">
+            
+            {% if role == 'student' %}
+                <!-- Student Form Fields -->
+                
+                <!-- Student Name Field -->
+                <div class="form-group">
+                    <label for="id_name">Student Name</label>
+                    {% with form.name as field %}
+                        <input type="text" 
+                               id="id_name" 
+                               name="name" 
+                               class="form-control" 
+                               placeholder="Enter your full name"
+                               value="{% if field.value %}{{ field.value }}{% endif %}">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="id_email">Email Address</label>
+                    {% with form.email as field %}
+                        <input type="email" 
+                               id="id_email" 
+                               name="email" 
+                               class="form-control" 
+                               placeholder="Enter your email"
+                               value="{% if field.value %}{{ field.value }}{% endif %}">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- ID Number Field -->
+                <div class="form-group">
+                    <label for="id_id_number">ID Number</label>
+                    {% with form.id_number as field %}
+                        <input type="text" 
+                               id="id_id_number" 
+                               name="id_number" 
+                               class="form-control" 
+                               placeholder="Enter your student ID"
+                               value="{% if field.value %}{{ field.value }}{% endif %}">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- Department Field -->
+                <div class="form-group">
+                    <label for="id_department">Department</label>
+                    {% with form.department as field %}
+                        <select id="id_department" name="department" class="form-control">
+                            <option value="">Select a department</option>
+                            {% for value, label in form.department.field.choices %}
+                                <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- Phone Number Field -->
+                <div class="form-group">
+                    <label for="id_phone_number">Phone Number</label>
+                    {% with form.phone_number as field %}
+                        <input type="text" 
+                               id="id_phone_number" 
+                               name="phone_number" 
+                               class="form-control" 
+                               placeholder="Enter your phone number"
+                               value="{% if field.value %}{{ field.value }}{% endif %}">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+            {% else %}
+                <!-- Librarian Form Fields -->
+                
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="id_email">Email Address</label>
+                    {% with form.email as field %}
+                        <input type="email" 
+                               id="id_email" 
+                               name="email" 
+                               class="form-control" 
+                               placeholder="Enter your email"
+                               value="{% if field.value %}{{ field.value }}{% endif %}">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- Phone Number Field -->
+                <div class="form-group">
+                    <label for="id_phone_number">Phone Number</label>
+                    {% with form.phone_number as field %}
+                        <input type="text" 
+                               id="id_phone_number" 
+                               name="phone_number" 
+                               class="form-control" 
+                               placeholder="Enter your phone number"
+                               value="{% if field.value %}{{ field.value }}{% endif %}">
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+            {% endif %}
+            
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="id_password1">Password</label>
+                {% with form.password1 as field %}
+                    <input type="password" 
+                           id="id_password1" 
+                           name="password1" 
+                           class="form-control" 
+                           placeholder="Enter a strong password">
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="form-error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+                <label for="id_password2">Confirm Password</label>
+                {% with form.password2 as field %}
+                    <input type="password" 
+                           id="id_password2" 
+                           name="password2" 
+                           class="form-control" 
+                           placeholder="Confirm your password">
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="form-error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            <!-- Non-field Errors -->
+            {% if form.non_field_errors %}
+                <div class="error-list">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <button type="submit" class="btn-register">Create Account</button>
+        </form>
+        
+        <div class="login-section">
+            Already have an account? <a href="{% url 'myapp:login' %}">Sign in here</a>
+        </div>
+    </div>
+</body>
+</html>

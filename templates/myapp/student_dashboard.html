@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Library Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        .navbar-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .user-info {
+            color: white;
+            font-size: 0.9em;
+        }
+        
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-logout:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .filter-group select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .book-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+        
+        .book-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .book-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .book-author {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        
+        .book-info {
+            font-size: 0.85em;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .book-info span {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .badge-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-unavailable {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .table thead {
+            background: #f8f9fa;
+        }
+        
+        .table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-returned {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .tab-button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        
+        .tab-button:hover {
+            color: #667eea;
+        }
+        
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 768px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .table {
+                font-size: 0.85em;
+            }
+            
+            .table th, .table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-brand">📚 Library Management System</div>
+        <div class="navbar-right">
+            <div class="user-info">Welcome, <strong>{% if student %}{{ student.name }}{% else %}{{ user.username }}{% endif %}</strong></div>
+            <a href="{% url 'myapp:logout' %}" class="btn-logout">Logout</a>
+        </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Student Dashboard</h1>
+            <p>Manage your library borrowing and explore available books</p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Books Currently Borrowed</div>
+                <div class="stat-value">{{ current_borrowed_count }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Books Borrowed</div>
+                <div class="stat-value">{{ total_borrowed_count }}</div>
+            </div>
+        </div>
+        
+        <!-- Tabs Navigation -->
+        <div class="section">
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab(event, 'borrowed')">📚 Currently Borrowed</button>
+                <button class="tab-button" onclick="showTab(event, 'history')">📖 Borrowing History</button>
+                <button class="tab-button" onclick="showTab(event, 'browse')">🔍 Browse Books</button>
+            </div>
+            
+            <!-- Currently Borrowed Tab -->
+            <div id="borrowed" class="tab-content active">
+                <div class="section-title">Currently Borrowed Books</div>
+                
+                {% if current_borrowed %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Book</th>
+                                <th>Author</th>
+                                <th>Issue Date</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for issue in current_borrowed %}
+                                <tr>
+                                    <td><strong>{{ issue.book.title }}</strong></td>
+                                    <td>{{ issue.book.author }}</td>
+                                    <td>{{ issue.issue_date|date:"d M Y" }}</td>
+                                    <td>{{ issue.quantity }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty-message">
+                        <p>You haven't borrowed any books yet. Browse the library to find books!</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Borrowing History Tab -->
+            <div id="history" class="tab-content">
+                <div class="section-title">Borrowing History</div>
+                
+                {% if borrowing_history %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Book</th>
+                                <th>Author</th>
+                                <th>Issue Date</th>
+                                <th>Return Date</th>
+                                <th>Status</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for issue in borrowing_history %}
+                                <tr>
+                                    <td><strong>{{ issue.book.title }}</strong></td>
+                                    <td>{{ issue.book.author }}</td>
+                                    <td>{{ issue.issue_date|date:"d M Y" }}</td>
+                                    <td>
+                                        {% if issue.return_date %}
+                                            {{ issue.return_date|date:"d M Y" }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if issue.is_returned %}
+                                            <span class="status-badge status-returned">Returned</span>
+                                        {% else %}
+                                            <span class="status-badge status-active">Active</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ issue.quantity }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="empty-message">
+                        <p>No borrowing history found.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Browse Books Tab -->
+            <div id="browse" class="tab-content">
+                <div class="section-title">Browse Library Books</div>
+                
+                <!-- Search and Filter -->
+                <div class="filter-group" style="flex-direction: column; align-items: flex-start; margin-bottom: 30px;">
+                    <form method="GET" id="browseBooksForm" style="width: 100%; display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;" onsubmit="return handleBrowseFormSubmit(event);">
+                        <div style="flex: 1; min-width: 250px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">🔍 Search Books</label>
+                            <input type="text" name="search" id="browseSearch" placeholder="Search by title, author, or ISBN..." 
+                                   value="{{ search_query }}" 
+                                   style="width: 100%; padding: 10px 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 0.95em;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">📊 Filter</label>
+                            <select name="status" id="browseStatus" style="padding: 10px 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 0.95em; cursor: pointer;">
+                                <option value="all" {% if filter_status == 'all' %}selected{% endif %}>All Books</option>
+                                <option value="available" {% if filter_status == 'available' %}selected{% endif %}>Available Only</option>
+                                <option value="unavailable" {% if filter_status == 'unavailable' %}selected{% endif %}>Unavailable</option>
+                            </select>
+                        </div>
+                        <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 25px; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; transition: all 0.3s;">Search</button>
+                        <a href="#" onclick="resetBrowseFilter(event)" style="background: #6c757d; color: white; padding: 10px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; display: inline-block;">Reset</a>
+                    </form>
+                </div>
+                
+                <!-- Books Grid -->
+                <div class="books-grid">
+                    {% for book in all_books %}
+                        <div class="book-card">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                            {% else %}
+                                <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 4em; margin-bottom: 15px;">📖</div>
+                            {% endif %}
+                            <div class="book-title">{{ book.title }}</div>
+                            <div class="book-author">by {{ book.author }}</div>
+                            <div class="book-info">
+                                <span>ISBN: {{ book.isbn }}</span>
+                                <span>Available: <strong>{{ book.quantity }}</strong> copies</span>
+                            </div>
+                            {% if book.quantity > 0 %}
+                                <span class="badge badge-available">✓ Available</span>
+                            {% else %}
+                                <span class="badge badge-unavailable">✗ Not Available</span>
+                            {% endif %}
+                        </div>
+                    {% empty %}
+                        <div class="empty-message" style="grid-column: 1 / -1;">
+                            <p>No books found. Try adjusting your search or filters.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(event, tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function handleBrowseFormSubmit(event) {
+            event.preventDefault();
+            
+            const search = document.getElementById('browseSearch').value;
+            const status = document.getElementById('browseStatus').value;
+            
+            // Build query string
+            let queryString = '';
+            if (search || status !== 'all') {
+                queryString = '?tab=browse';
+                if (search) {
+                    queryString += '&search=' + encodeURIComponent(search);
+                }
+                if (status !== 'all') {
+                    queryString += '&status=' + encodeURIComponent(status);
+                }
+            } else {
+                queryString = '?tab=browse';
+            }
+            
+            // Navigate with query string
+            window.location.href = window.location.pathname + queryString;
+            return false;
+        }
+        
+        function resetBrowseFilter(event) {
+            event.preventDefault();
+            document.getElementById('browseSearch').value = '';
+            document.getElementById('browseStatus').value = 'all';
+            window.location.href = window.location.pathname + '?tab=browse';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we should show browse tab (from URL parameter)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('tab') && urlParams.get('tab') === 'browse') {
+                // Activate browse tab
+                const browseTab = document.querySelector('button[onclick*="browse"]');
+                if (browseTab) {
+                    browseTab.click();
+                }
+            }
+            
+            // Auto-submit form when filter changes
+            const filterSelect = document.getElementById('browseStatus');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', function() {
+                    document.getElementById('browseBooksForm').dispatchEvent(new Event('submit'));
+                });
+            }
+        });
+    </script>
+</body>
+</html>

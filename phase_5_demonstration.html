@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 5 - Role-Based Access Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        .code-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            margin: 20px 0 0 0;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+
+        .code-description {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .learning-objective {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .important-box {
+            background: #ffe7e7;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .backend-flow {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .step-box {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .flow-diagram {
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .terminal-command {
+            background: #2d2d2d;
+            color: #00ff00;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #00ff00;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .terminal-command:hover {
+            background: #404040;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .navigation a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.9em;
+        }
+
+        .navigation a:hover {
+            color: #764ba2;
+            transform: translateX(10px);
+        }
+
+        @media (min-width: 1400px) {
+            .navigation {
+                display: block;
+            }
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>👮 Phase 5: Role-Based Access Control (RBAC)</h1>
+            <p>Complete Authorization System with UserApproval</p>
+        </header>
+
+        <div class="navigation">
+            <a href="#overview">Overview</a>
+            <a href="#rbac">RBAC System</a>
+            <a href="#approval">User Approval</a>
+            <a href="#models">Models</a>
+            <a href="#views">Views</a>
+            <a href="#decorators">Decorators</a>
+            <a href="#templates">Templates</a>
+            <a href="#dashboards">Dashboards</a>
+            <a href="#testing">Testing</a>
+            <a href="#completion">Completion</a>
+        </div>
+
+        <div class="content">
+            <!-- OVERVIEW SECTION -->
+            <section id="overview">
+                <h2>🎯 Phase 5 Overview</h2>
+                
+                <div class="learning-objective">
+                    <strong>What is Phase 5?</strong><br>
+                    Phase 5 implements complete role-based access control. Different users get different features based on their role (Student, Librarian, Admin). New users must be approved before accessing the system. This is the final production-ready phase.
+                </div>
+
+                <div class="backend-flow">
+                    <strong>Phase 5 Features:</strong>
+                    <ul>
+                        <li><strong>User Roles:</strong> Student, Librarian, Admin with different permissions</li>
+                        <li><strong>User Approval:</strong> New users wait for librarian approval</li>
+                        <li><strong>Role-Based Decorators:</strong> Protect views based on role</li>
+                        <li><strong>Custom Dashboards:</strong> Different UI for each role</li>
+                        <li><strong>Permission System:</strong> Fine-grained access control</li>
+                        <li><strong>Audit Logging:</strong> Track who accessed what</li>
+                    </ul>
+                </div>
+
+                <div class="important-box">
+                    <strong>⚠️ Authorization vs Authentication:</strong>
+                    <ul>
+                        <li><strong>Authentication:</strong> "Who are you?" (Login/Password)</li>
+                        <li><strong>Authorization:</strong> "What can you do?" (Roles/Permissions)</li>
+                        <li>Phase 4: Authentication (Login system)</li>
+                        <li>Phase 5: Authorization (Role-based access)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- RBAC SYSTEM SECTION -->
+            <section id="rbac">
+                <h2>🔐 Role-Based Access Control (RBAC)</h2>
+
+                <h3>Three-Tier Role System</h3>
+
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Can View</th>
+                        <th>Can Edit</th>
+                        <th>Can Delete</th>
+                        <th>Special Permissions</th>
+                    </tr>
+                    <tr>
+                        <td><strong>👤 Student</strong></td>
+                        <td>Browse books, My borrowed books</td>
+                        <td>View profile</td>
+                        <td>None</td>
+                        <td>Issue/return books</td>
+                    </tr>
+                    <tr>
+                        <td><strong>📚 Librarian</strong></td>
+                        <td>All books, All students, Issued books</td>
+                        <td>Book info, Student info</td>
+                        <td>Books, Students</td>
+                        <td>Approve users, Issue/return books</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🔑 Admin</strong></td>
+                        <td>Everything</td>
+                        <td>Everything</td>
+                        <td>Everything</td>
+                        <td>Full system access, Manage admins</td>
+                    </tr>
+                </table>
+
+                <h3>RBAC Flow Diagram</h3>
+
+                <div class="flow-diagram">
+ROLE-BASED ACCESS CONTROL FLOW
+═══════════════════════════════
+
+User Login
+    ↓
+Check authentication (Phase 4)
+    ↓
+Get user.profile.role
+    ↓
+Route to role-specific dashboard:
+    ├── Student → Student Dashboard (browse books)
+    ├── Librarian → Librarian Dashboard (manage system)
+    └── Admin → Admin Dashboard (full access)
+    ↓
+For each action:
+  1. Check user is authenticated
+  2. Check user role matches requirement
+  3. Allow action or deny
+  4. Log the action
+                </div>
+            </section>
+
+            <!-- USER APPROVAL SECTION -->
+            <section id="approval">
+                <h2>✅ User Approval System</h2>
+
+                <div class="backend-flow">
+                    <strong>Why User Approval?</strong>
+                    <ul>
+                        <li>Prevent spam registrations</li>
+                        <li>Verify students are real library members</li>
+                        <li>Librarian controls who gets access</li>
+                        <li>Optional extra layer of security</li>
+                    </ul>
+                </div>
+
+                <h3>User Approval Workflow</h3>
+
+                <div class="flow-diagram">
+USER APPROVAL WORKFLOW
+══════════════════════
+
+1. NEW USER REGISTRATION
+   User fills form → Password hashed → Account created
+   is_approved = False (default)
+   ↓
+
+2. PENDING STATUS
+   User tries to login
+   Email/password correct → Login works
+   BUT: Redirected to "waiting for approval" page
+   Cannot access dashboard
+   ↓
+
+3. LIBRARIAN REVIEW
+   Librarian views pending users
+   Checks student ID, etc.
+   ↓
+
+4. APPROVAL/REJECTION
+   If approved: is_approved = True
+              → User can now access system
+   If rejected: is_approved = False (stays)
+             → Try different credentials?
+                </div>
+
+                <div class="code-title">myapp/models.py - UserApproval Model</div>
+                <div class="code-block"><pre><code><span class="keyword">class</span> UserApproval(models.Model):
+    <span class="comment">"""
+    Track user registration and approval status
+    """</span>
+    
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='approval'
+    )
+    
+    is_approved = models.BooleanField(default=False)
+    
+    approval_date = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+    
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='approved_users'
+    )
+    
+    rejection_reason = models.TextField(
+        blank=True,
+        help_text='Why was user rejected?'
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    <span class="keyword">class</span> Meta:
+        db_table = 'user_approvals'
+    
+    <span class="keyword">def</span> __str__(self):
+        status = 'Approved' if self.is_approved else 'Pending'
+        <span class="keyword">return</span> f"{self.user.username} - {status}"
+    
+    <span class="keyword">def</span> approve(self, librarian):
+        <span class="comment">"""Approve user"""</span>
+        <span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone
+        self.is_approved = True
+        self.approved_by = librarian
+        self.approval_date = timezone.now()
+        self.save()
+    
+    <span class="keyword">def</span> reject(self, reason):
+        <span class="comment">"""Reject user"""</span>
+        self.is_approved = False
+        self.rejection_reason = reason
+        self.save()</code></pre></div>
+            </section>
+
+            <!-- MODELS SECTION -->
+            <section id="models">
+                <h2>📊 Phase 5: Models with Authorization</h2>
+
+                <h3>Extended UserProfile with Approval Check</h3>
+
+                <div class="code-title">myapp/models.py - Enhanced UserProfile</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User
+
+<span class="keyword">class</span> UserProfile(models.Model):
+    <span class="comment">"""Extended user model with role and approval"""</span>
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    ROLE_CHOICES = [
+        ('student', 'Student'),
+        ('librarian', 'Librarian'),
+        ('admin', 'Administrator')
+    ]
+    
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default='student'
+    )
+    
+    phone = models.CharField(max_length=10, blank=True)
+    address = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    <span class="keyword">class</span> Meta:
+        db_table = 'user_profiles'
+    
+    <span class="keyword">def</span> is_approved(self):
+        <span class="comment">"""Check if user is approved"""</span>
+        <span class="keyword">return</span> self.user.approval.is_approved
+    
+    <span class="keyword">def</span> is_librarian(self):
+        <span class="comment">"""Check if librarian"""</span>
+        <span class="keyword">return</span> self.role in ['librarian', 'admin']
+    
+    <span class="keyword">def</span> is_student(self):
+        <span class="comment">"""Check if student"""</span>
+        <span class="keyword">return</span> self.role == 'student'
+    
+    <span class="keyword">def</span> is_admin(self):
+        <span class="comment">"""Check if admin"""</span>
+        <span class="keyword">return</span> self.role == 'admin'</code></pre></div>
+            </section>
+
+            <!-- VIEWS SECTION -->
+            <section id="views">
+                <h2>🎬 Phase 5: Role-Based Views</h2>
+
+                <h3>Role-Based Decorators</h3>
+
+                <div class="code-title">myapp/decorators.py - Custom Role Decorators</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> redirect
+<span class="keyword">from</span> django.contrib.auth.decorators <span class="keyword">import</span> login_required
+
+<span class="keyword">def</span> approval_required(view_func):
+    <span class="comment">"""User must be approved to access"""</span>
+    <span class="keyword">def</span> wrapper(request, *args, **kwargs):
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.is_authenticated:
+            <span class="keyword">return</span> redirect('myapp:login')
+        
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.profile.is_approved():
+            <span class="keyword">return</span> redirect('myapp:waiting_approval')
+        
+        <span class="keyword">return</span> view_func(request, *args, **kwargs)
+    <span class="keyword">return</span> wrapper
+
+<span class="keyword">def</span> librarian_required(view_func):
+    <span class="comment">"""Only librarians and admins"""</span>
+    <span class="keyword">def</span> wrapper(request, *args, **kwargs):
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.is_authenticated:
+            <span class="keyword">return</span> redirect('myapp:login')
+        
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.profile.is_librarian():
+            <span class="keyword">return</span> redirect('myapp:access_denied')
+        
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.profile.is_approved():
+            <span class="keyword">return</span> redirect('myapp:waiting_approval')
+        
+        <span class="keyword">return</span> view_func(request, *args, **kwargs)
+    <span class="keyword">return</span> wrapper
+
+<span class="keyword">def</span> admin_required(view_func):
+    <span class="comment">"""Only admins"""</span>
+    <span class="keyword">def</span> wrapper(request, *args, **kwargs):
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.is_authenticated:
+            <span class="keyword">return</span> redirect('myapp:login')
+        
+        <span class="keyword">if</span> <span class="keyword">not</span> request.user.profile.is_admin():
+            <span class="keyword">return</span> redirect('myapp:access_denied')
+        
+        <span class="keyword">return</span> view_func(request, *args, **kwargs)
+    <span class="keyword">return</span> wrapper</code></pre></div>
+
+                <h3>Protected Views Using Decorators</h3>
+
+                <div class="code-title">myapp/views.py - Role-Protected Views</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> .decorators <span class="keyword">import</span> librarian_required, admin_required, approval_required
+<span class="keyword">from</span> .models <span class="keyword">import</span> UserApproval
+
+@approval_required
+<span class="keyword">def</span> student_dashboard(request):
+    <span class="comment">"""Student dashboard - needs approval"""</span>
+    <span class="keyword">return</span> render(request, 'myapp/dashboards/student_dashboard.html')
+
+@librarian_required
+<span class="keyword">def</span> librarian_dashboard(request):
+    <span class="comment">"""Librarian dashboard - needs librarian role + approval"""</span>
+    context = {
+        'total_books': Book.objects.count(),
+        'total_students': Student.objects.count(),
+        'pending_approvals': UserApproval.objects.filter(
+            is_approved=False
+        ).count()
+    }
+    <span class="keyword">return</span> render(request, 'myapp/dashboards/librarian_dashboard.html', context)
+
+@admin_required
+<span class="keyword">def</span> admin_dashboard(request):
+    <span class="comment">"""Admin dashboard - only admins"""</span>
+    context = {
+        'total_users': User.objects.count(),
+        'active_users': User.objects.filter(is_active=True).count(),
+        'pending_users': UserApproval.objects.filter(
+            is_approved=False
+        ).count()
+    }
+    <span class="keyword">return</span> render(request, 'myapp/dashboards/admin_dashboard.html', context)
+
+@librarian_required
+<span class="keyword">def</span> pending_users(request):
+    <span class="comment">"""View pending user approvals"""</span>
+    pending = UserApproval.objects.filter(is_approved=False)
+    
+    <span class="keyword">if</span> request.method == 'POST':
+        action = request.POST.get('action')
+        user_id = request.POST.get('user_id')
+        approval = get_object_or_404(UserApproval, user_id=user_id)
+        
+        <span class="keyword">if</span> action == 'approve':
+            approval.approve(request.user)
+            messages.success(request, f'{approval.user.username} approved!')
+        <span class="keyword">elif</span> action == 'reject':
+            reason = request.POST.get('reason')
+            approval.reject(reason)
+            messages.info(request, f'{approval.user.username} rejected.')
+        
+        <span class="keyword">return</span> redirect('myapp:pending_users')
+    
+    context = {'pending_users': pending}
+    <span class="keyword">return</span> render(request, 'myapp/pending_users.html', context)</code></pre></div>
+
+                <h3>Waiting for Approval Page</h3>
+
+                <div class="code-title">myapp/views.py - Waiting for Approval</div>
+                <div class="code-block"><pre><code><span class="keyword">def</span> waiting_approval(request):
+    <span class="comment">"""Show if user is not approved yet"""</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> request.user.is_authenticated:
+        <span class="keyword">return</span> redirect('myapp:login')
+    
+    approval = request.user.approval
+    context = {
+        'username': request.user.username,
+        'created_at': approval.created_at,
+        'status': 'Approved' if approval.is_approved else 'Pending'
+    }
+    <span class="keyword">return</span> render(request, 'myapp/waiting_approval.html', context)</code></pre></div>
+            </section>
+
+            <!-- DECORATORS SECTION -->
+            <section id="decorators">
+                <h2>🛡️ Advanced Decorator Patterns</h2>
+
+                <h3>Combining Multiple Decorators</h3>
+
+                <div class="code-title">Using Multiple Decorators</div>
+                <div class="code-block"><pre><code><span class="keyword">from</span> django.contrib.auth.decorators <span class="keyword">import</span> login_required
+<span class="keyword">from</span> .decorators <span class="keyword">import</span> approval_required, librarian_required
+
+<span class="comment\">\"\"\"
+Order matters! Stack from bottom to top:
+1. @login_required - First check: user authenticated?
+2. @approval_required - Second: user approved?
+3. @librarian_required - Third: correct role?
+\"\"\"</span>
+
+@librarian_required
+@approval_required
+@login_required
+<span class=\"keyword\">def</span> issue_book_advanced(request, pk):
+    <span class=\"comment\">\"\"\"Full protection - authenticated, approved, librarian\"\"\"</span>
+    <span class=\"comment\"># This view is fully protected</span>
+    book = Book.objects.get(pk=pk)
+    <span class=\"keyword\">return</span> render(request, 'myapp/issue_book.html', {'book': book})</code></pre></div>
+            </section>
+
+            <!-- TEMPLATES SECTION -->
+            <section id="templates">
+                <h2>🎨 Phase 5: Role-Based Templates</h2>
+
+                <h3>Main Dashboard (Router)</h3>
+
+                <div class="code-title">templates/myapp/dashboard.html - Role Router</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Dashboard&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    <span class=\"comment\">&lt;!-- Route to role-specific dashboard --&gt;</span>
+    {% if user.profile.is_admin %}
+        &lt;script&gt;window.location.href = '{% url \"myapp:admin_dashboard\" %}';&lt;/script&gt;
+    {% elif user.profile.is_librarian %}
+        &lt;script&gt;window.location.href = '{% url \"myapp:librarian_dashboard\" %}';&lt;/script&gt;
+    {% elif user.profile.is_student %}
+        &lt;script&gt;window.location.href = '{% url \"myapp:student_dashboard\" %}';&lt;/script&gt;
+    {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <h3>Waiting for Approval Template</h3>
+
+                <div class="code-title">templates/myapp/waiting_approval.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Waiting for Approval&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;div style="text-align: center; padding: 50px;"&gt;
+        &lt;h1&gt;⏳ Account Pending Approval&lt;/h1&gt;
+        
+        &lt;p&gt;Hello, {{ username }}!&lt;/p&gt;
+        &lt;p&gt;Your account has been created but needs approval from library staff.&lt;/p&gt;
+        
+        &lt;div style="background: #e8f4f8; padding: 20px; margin: 20px;"&gt;
+            &lt;p&gt;&lt;strong&gt;Registration Date:&lt;/strong&gt; {{ created_at|date:\"d/m/Y\" }}&lt;/p&gt;
+            &lt;p&gt;&lt;strong&gt;Status:&lt;/strong&gt; 
+                {% if status == 'Approved' %}
+                    ✅ APPROVED - You can now login!
+                {% else %}
+                    ⏳ PENDING - Waiting for librarian approval
+                {% endif %}
+            &lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;p&gt;&lt;a href="{% url 'myapp:logout' %}"&gt;Logout&lt;/a&gt;&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+                <h3>Pending Users (Librarian)</h3>
+
+                <div class="code-title">templates/myapp/pending_users.html</div>
+                <div class="code-block"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Pending User Approvals&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;📋 Pending User Approvals&lt;/h1&gt;
+    
+    {% if pending_users %}
+        &lt;table border="1"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Username&lt;/th&gt;
+                &lt;th&gt;Email&lt;/th&gt;
+                &lt;th&gt;Registration Date&lt;/th&gt;
+                &lt;th&gt;Action&lt;/th&gt;
+            &lt;/tr&gt;
+            {% for approval in pending_users %}
+                &lt;tr&gt;
+                    &lt;td&gt;{{ approval.user.username }}&lt;/td&gt;
+                    &lt;td&gt;{{ approval.user.email }}&lt;/td&gt;
+                    &lt;td&gt;{{ approval.created_at|date:\"d/m/Y\" }}&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;form method="POST" style="display: inline;"&gt;
+                            {% csrf_token %}
+                            &lt;input type="hidden" name="user_id" value="{{ approval.user.id }}"&gt;
+                            &lt;input type="hidden" name="action" value="approve"&gt;
+                            &lt;button style="background: green; color: white; padding: 5px;"&gt;✅ Approve&lt;/button&gt;
+                        &lt;/form&gt;
+                        
+                        &lt;form method="POST" style="display: inline;"&gt;
+                            {% csrf_token %}
+                            &lt;input type="hidden" name="user_id" value="{{ approval.user.id }}"&gt;
+                            &lt;input type="hidden" name="action" value="reject"&gt;
+                            &lt;input type="text" name="reason" placeholder="Rejection reason" required&gt;
+                            &lt;button style="background: red; color: white; padding: 5px;"&gt;❌ Reject&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+        &lt;/table&gt;
+    {% else %}
+        &lt;p&gt;✅ No pending approvals!&lt;/p&gt;
+    {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+            </section>
+
+            <!-- DASHBOARDS SECTION -->
+            <section id="dashboards">
+                <h2>📊 Role-Specific Dashboards</h2>
+
+                <h3>Student Dashboard</h3>
+
+                <div class="feature-box">
+                    <strong>Features:</strong>
+                    <ul>
+                        <li>Browse available books</li>
+                        <li>View my borrowed books</li>
+                        <li>Check due dates and fines</li>
+                        <li>Return books</li>
+                        <li>View profile</li>
+                    </ul>
+                </div>
+
+                <h3>Librarian Dashboard</h3>
+
+                <div class="feature-box">
+                    <strong>Features:</strong>
+                    <ul>
+                        <li>Manage books (add, edit, delete)</li>
+                        <li>Manage students</li>
+                        <li>View all issued books</li>
+                        <li>Process student approvals</li>
+                        <li>Generate reports</li>
+                    </ul>
+                </div>
+
+                <h3>Admin Dashboard</h3>
+
+                <div class="feature-box">
+                    <strong>Features:</strong>
+                    <ul>
+                        <li>All librarian features</li>
+                        <li>User management (create admins/librarians)</li>
+                        <li>System configuration</li>
+                        <li>Audit logs</li>
+                        <li>Database backups</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- TESTING SECTION -->
+            <section id="testing">
+                <h2>✅ Phase 5 Testing Procedures</h2>
+
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Test Student Registration & Approval</strong>
+                    <ul>
+                        <li>Register as new student</li>
+                        <li>Try to login - should see "waiting for approval"</li>
+                        <li>Login as librarian</li>
+                        <li>Approve the student</li>
+                        <li>Student can now access dashboard</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Test Role-Based Access</strong>
+                    <ul>
+                        <li>Login as student</li>
+                        <li>Try accessing /librarian-dashboard/ - should get error</li>
+                        <li>Login as librarian</li>
+                        <li>Can access librarian dashboard</li>
+                        <li>Can approve users</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Test Rejection</strong>
+                    <ul>
+                        <li>Register another student</li>
+                        <li>Librarian rejects with reason</li>
+                        <li>Student sees rejection</li>
+                        <li>Cannot access dashboard</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <span class="step-number">4</span>
+                    <strong>Test Admin Features</strong>
+                    <ul>
+                        <li>Login as admin</li>
+                        <li>Access admin dashboard</li>
+                        <li>Can do everything librarians can do</li>
+                        <li>Can create new librarians/admins</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Phase 5 Complete When:</strong>
+                    <ul>
+                        <li>User registration works</li>
+                        <li>Approval system functional</li>
+                        <li>Unapproved users see waiting page</li>
+                        <li>Role-based decorators work</li>
+                        <li>Each role sees correct dashboard</li>
+                        <li>Permissions enforced correctly</li>
+                        <li>Rejection with reason works</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- COMPLETION SECTION -->
+            <section id="completion">
+                <h2>🎉 Complete Library Management System</h2>
+
+                <div class="success-box">
+                    <strong>✅ All 5 Phases Completed!</strong>
+                </div>
+
+                <h3>Phase-by-Phase Evolution</h3>
+
+                <table>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Focus</th>
+                        <th>Key Features</th>
+                        <th>Database Tables</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 1</strong></td>
+                        <td>Basic CRUD</td>
+                        <td>Add/Edit/Delete books</td>
+                        <td>books</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 2</strong></td>
+                        <td>Form Validation</td>
+                        <td>ModelForm with validation</td>
+                        <td>books</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 3</strong></td>
+                        <td>Relationships</td>
+                        <td>Students borrowing books</td>
+                        <td>books, students, issued_books</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 4</strong></td>
+                        <td>Authentication</td>
+                        <td>Login/Register with sessions</td>
+                        <td>auth_user, user_profiles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 5</strong></td>
+                        <td>Authorization</td>
+                        <td>Role-based access, approvals</td>
+                        <td>auth_user, user_profiles, user_approvals</td>
+                    </tr>
+                </table>
+
+                <h3>Learning Outcomes</h3>
+
+                <div class="learning-objective">
+                    <strong>You now understand:</strong>
+                    <ul>
+                        <li>✅ Django ORM and database relationships</li>
+                        <li>✅ Form validation and error handling</li>
+                        <li>✅ Model relationships (One-to-Many)</li>
+                        <li>✅ User authentication and sessions</li>
+                        <li>✅ Password hashing and security</li>
+                        <li>✅ Role-based access control</li>
+                        <li>✅ Decorators for view protection</li>
+                        <li>✅ Template rendering with context</li>
+                        <li>✅ Query optimization (prefetch, select_related)</li>
+                        <li>✅ Production-ready Django development</li>
+                    </ul>
+                </div>
+
+                <h3>Next Steps</h3>
+
+                <div class="backend-flow">
+                    <strong>To expand this system:</strong>
+                    <ul>
+                        <li><strong>API:</strong> Add REST API with Django REST Framework</li>
+                        <li><strong>Tests:</strong> Write unit tests for all views</li>
+                        <li><strong>Caching:</strong> Add Redis for performance</li>
+                        <li><strong>Celery:</strong> Background tasks for emails</li>
+                        <li><strong>Frontend:</strong> React/Vue.js frontend</li>
+                        <li><strong>Docker:</strong> Containerize the application</li>
+                        <li><strong>CI/CD:</strong> Automated testing and deployment</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>📝 <strong>Library Management System - Phase 5 (Complete)</strong></p>
+            <p>Role-Based Access Control with User Approval</p>
+            <p>© 2025 | November 17, 2025 | All 5 Phases Complete</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.terminal-command').forEach(cmd => {
+            cmd.addEventListener('click', function() {
+                const text = this.innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = '✅ Copied!';
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                    }, 2000);
+                });
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

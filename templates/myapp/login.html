@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Library Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input::placeholder {
+            color: #999;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .remember-forgot label {
+            margin-bottom: 0;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-forgot input[type="checkbox"] {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        
+        .remember-forgot a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .signup-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .signup-section a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signup-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        /* ===== MODAL STYLES ===== */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-backdrop.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 420px;
+            max-height: 80vh;
+            z-index: 1001;
+            animation: slideIn 0.3s ease-out;
+            overflow-y: auto;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translate(-50%, -55%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+        }
+
+        /* ===== CUSTOM SCROLLBAR ===== */
+        .modal::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .modal::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .modal::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        /* ===== MODAL HEADER ===== */
+        .modal-header {
+            padding: 22px 28px;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 30px); }
+        }
+
+        .modal-header.warning {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .modal-header.danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .modal-header.danger {
+            background: linear-gradient(135deg, #dc3545 0%, #b91f2d 100%);
+            border-bottom: 4px solid #a71825;
+        }
+
+        .modal-icon {
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .modal-title {
+            font-size: 1.35em;
+            font-weight: 700;
+            letter-spacing: 0px;
+        }
+
+        /* ===== MODAL BODY ===== */
+        .modal-body {
+            padding: 22px 28px;
+            background: white;
+            text-align: center;
+            line-height: 1.5;
+            color: #333;
+            overflow-y: auto;
+            max-height: calc(80vh - 180px);
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 10px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        .modal-body strong {
+            display: block;
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .modal-body p {
+            font-size: 1em;
+            color: #555;
+            margin: 12px 0;
+        }
+
+        .rejection-container {
+            margin: 12px 0;
+        }
+
+        .rejection-section {
+            margin-bottom: 12px;
+        }
+
+        .rejection-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.93em;
+            font-weight: 700;
+            color: #fff;
+            background: #dc3545;
+            padding: 9px 14px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rejection-reason-box {
+            background: #ffebee;
+            border: 2px solid #dc3545;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .rejection-reason-label {
+            display: block;
+            font-weight: 700;
+            color: #721c24;
+            margin-bottom: 10px;
+            font-size: 0.82em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rejection-reason-text {
+            color: #333;
+            font-size: 0.95em;
+            line-height: 1.5;
+            font-weight: 600;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #dc3545;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.12);
+        }
+
+        .reapply-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.93em;
+            font-weight: 700;
+            color: #fff;
+            background: #2196F3;
+            padding: 9px 14px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .reapply-info {
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            padding: 13px;
+            text-align: left;
+        }
+
+        .reapply-info-content {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .reapply-icon {
+            font-size: 1.8em;
+            line-height: 1;
+        }
+
+        .reapply-text {
+            padding-top: 2px;
+        }
+
+        .reapply-info strong {
+            display: block;
+            color: #1565c0;
+            font-weight: 700;
+            font-size: 0.88em;
+            text-transform: uppercase;
+            letter-spacing: 0px;
+            margin-bottom: 4px;
+        }
+
+        .reapply-info p {
+            font-size: 0.88em;
+            color: #0d47a1;
+            margin: 3px 0;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .important-note {
+            background: #fff8e1;
+            border-left: 3px solid #ffc107;
+            border-radius: 3px;
+            padding: 10px 12px;
+            margin-top: 8px;
+            font-size: 0.82em;
+            color: #856404;
+            font-weight: 500;
+        }
+
+        .important-note strong {
+            color: #721c24;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* ===== MODAL FOOTER ===== */
+        .modal-footer {
+            padding: 13px 28px;
+            background: #f8f9fa;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .modal-footer p {
+            font-size: 0.78em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .modal-footer button {
+            padding: 9px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0px;
+            box-shadow: none;
+        }
+
+        .modal-footer .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            min-width: 110px;
+        }
+
+        .modal-footer .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-footer .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* ===== PENDING MODAL ENHANCEMENTS ===== */
+        .pending-section {
+            margin: 10px 0;
+            padding: 12px;
+            background: #fff9e6;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+        }
+
+        .pending-section-title {
+            font-weight: 700;
+            color: #856404;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-size: 0.88em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pending-section-content {
+            color: #333;
+            font-size: 0.88em;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .pending-section-content strong {
+            color: #721c24;
+            font-weight: 700;
+        }
+
+        /* ===== REJECTION MODAL INFO BOXES ===== */
+        .rejection-info-box {
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            padding: 13px;
+            text-align: left;
+        }
+
+        .rejection-next-box {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            padding: 13px;
+            text-align: left;
+        }
+
+        .rejection-info-content {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .rejection-icon {
+            font-size: 1.8em;
+            line-height: 1;
+        }
+
+        .rejection-text {
+            padding-top: 2px;
+        }
+
+        .rejection-info-box strong,
+        .rejection-next-box strong {
+            display: block;
+            color: #1565c0;
+            font-weight: 700;
+            font-size: 0.88em;
+            text-transform: uppercase;
+            letter-spacing: 0px;
+            margin-bottom: 4px;
+        }
+
+        .rejection-next-box strong {
+            color: #2e7d32;
+        }
+
+        .rejection-info-box p,
+        .rejection-next-box p {
+            font-size: 0.88em;
+            color: #0d47a1;
+            margin: 3px 0;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .rejection-next-box p {
+            color: #1b5e20;
+        }
+
+        .rejection-important-note {
+            background: #fff8e1;
+            border-left: 3px solid #ffc107;
+            border-radius: 3px;
+            padding: 10px 12px;
+            margin-top: 10px;
+            font-size: 0.82em;
+            color: #856404;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .rejection-important-note strong {
+            color: #721c24;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* ===== RESPONSIVE SCROLL ADJUSTMENTS ===== */
+        @media (max-width: 768px) {
+            .modal {
+                max-height: 90vh;
+            }
+
+            .modal-body {
+                max-height: calc(90vh - 250px);
+                padding: 30px 20px;
+            }
+
+            .modal-header {
+                padding: 30px 20px;
+            }
+
+            .modal-footer {
+                padding: 20px;
+            }
+
+            .modal-icon {
+                font-size: 3em;
+                margin-bottom: 15px;
+            }
+
+            .modal-title {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .modal {
+                max-height: 95vh;
+            }
+
+            .modal-body {
+                max-height: calc(95vh - 300px);
+            }
+
+            .modal-header {
+                padding: 20px 25px;
+            }
+
+            .modal-icon {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+            .modal-title {
+                font-size: 1.3em;
+            }
+
+            .rejection-section {
+                margin-bottom: 15px;
+            }
+
+            .pending-section {
+                margin: 15px 0;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+    <!-- Pending Approval Modal -->
+    <div class="modal" id="pendingModal">
+        <div class="modal-content">
+            <div class="modal-header warning">
+                <div class="modal-icon">⏳</div>
+                <div class="modal-title">Registration Under Review</div>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 1.05em; font-weight: 600; color: #333; margin-bottom: 20px;">
+                    Your registration request is <strong>PENDING APPROVAL</strong>.
+                </p>
+
+                <div class="pending-section">
+                    <div class="pending-section-title">
+                        <span>📝</span>
+                        <span>Status Information</span>
+                    </div>
+                    <div class="pending-section-content">
+                        Your application has been received and is <strong>currently under review</strong> by our administration team. We are carefully reviewing all submitted information to ensure compliance with our policies.
+                    </div>
+                </div>
+
+                <div class="pending-section">
+                    <div class="pending-section-title">
+                        <span>⏰</span>
+                        <span>What to Expect</span>
+                    </div>
+                    <div class="pending-section-content">
+                        <strong>Review Process Timeline:</strong>
+                        <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                            <li>Standard review: <strong>1-3 business days</strong></li>
+                            <li>You will be <strong>notified immediately</strong> once a decision is made</li>
+                            <li>Check your email for approval or rejection notice</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pending-section">
+                    <div class="pending-section-title">
+                        <span>💡</span>
+                        <span>What to Do Now</span>
+                    </div>
+                    <div class="pending-section-content">
+                        Please wait patiently for the approval decision. You can try logging in again once your account has been <strong>approved by an administrator</strong>.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p>Questions? Contact our support team at support@library.edu</p>
+                <button class="btn-primary" onclick="closeModal('pendingModal')">OK, I Understand</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejected Modal -->
+    <div class="modal" id="rejectedModal">
+        <div class="modal-content">
+            <div class="modal-header danger">
+                <div class="modal-icon">✗</div>
+                <div class="modal-title">Registration Request Rejected</div>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 1.02em; font-weight: 600; color: #721c24; margin-bottom: 18px;">
+                    Your registration request has been <strong>REJECTED</strong>.
+                </p>
+
+                <!-- Rejection Reason Section -->
+                <div class="rejection-section">
+                    <div class="rejection-section-title">
+                        <span>📌</span>
+                        <span>Rejection Details</span>
+                    </div>
+                    <div class="rejection-reason-box">
+                        <div class="rejection-reason-label">Rejection Reason</div>
+                        <div class="rejection-reason-text" id="rejectionReason">
+                            Not specified
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Section -->
+                <div class="rejection-section">
+                    <div class="rejection-section-title">
+                        <span>⏰</span>
+                        <span>Account Timeline</span>
+                    </div>
+                    <div class="rejection-info-box">
+                        <div class="rejection-info-content">
+                            <div class="rejection-icon">⏳</div>
+                            <div class="rejection-text">
+                                <strong>Account Deletion</strong>
+                                <p>
+                                    Your account will be <strong>automatically deleted</strong> in <strong>24 hours</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Steps Section -->
+                <div class="rejection-section">
+                    <div class="rejection-section-title">
+                        <span>✓</span>
+                        <span>What You Can Do</span>
+                    </div>
+                    <div class="rejection-next-box">
+                        <div class="rejection-info-content">
+                            <div class="rejection-icon">📝</div>
+                            <div class="rejection-text">
+                                <strong>Reapplication Options</strong>
+                                <p>
+                                    After <strong>24 hours</strong>, you are welcome to apply again using:
+                                </p>
+                                <ul style="margin: 8px 0 0 0; padding-left: 18px; font-size: 0.9em;">
+                                    <li>The same email address, or</li>
+                                    <li>A different email address</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Note -->
+                <div class="rejection-important-note">
+                    <strong>💡 Helpful Tip</strong>
+                    Please review the rejection reason above carefully. When you reapply, ensure all information is accurate and complete to improve your chances of approval.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p>Need help? Contact our support team for assistance.</p>
+                <button class="btn-primary" onclick="closeModal('rejectedModal')">OK, I Understand</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo">📚</div>
+            <h1>Library System</h1>
+            <p class="subtitle">Sign in to your account</p>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    {% if 'pending' in message|lower %}
+                        <script>
+                            window.addEventListener('DOMContentLoaded', function() {
+                                showModal('pendingModal');
+                            });
+                        </script>
+                    {% elif 'rejected' in message|lower %}
+                        <script>
+                            window.addEventListener('DOMContentLoaded', function() {
+                                var message = '{{ message }}';
+                                // Extract reason from message
+                                // Message format: "❌ Your registration request has been rejected. Reason: [reason] ❌ You can reapply after 24 hours."
+                                var reasonMatch = message.match(/Reason:\s*(.+?)\s*❌/);
+                                var reason = reasonMatch ? reasonMatch[1].trim() : 'Not specified';
+                                document.getElementById('rejectionReason').textContent = reason;
+                                showModal('rejectedModal');
+                            });
+                        </script>
+                    {% else %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" name="remember"> Remember me
+                </label>
+                <a href="#">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn-login">Sign In</button>
+        </form>
+        
+        <div class="signup-section">
+            Don't have an account? <a href="{% url 'myapp:register' %}">Sign up here</a>
+        </div>
+    </div>
+
+    <script>
+        function showModal(modalId) {
+            document.getElementById('modalBackdrop').classList.add('show');
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById('modalBackdrop').classList.remove('show');
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        document.getElementById('modalBackdrop').addEventListener('click', function() {
+            document.querySelectorAll('.modal.show').forEach(modal => {
+                modal.classList.remove('show');
+            });
+            this.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
