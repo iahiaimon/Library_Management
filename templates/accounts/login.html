@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,7 +19,7 @@
             justify-content: center;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 450px;
             width: 100%;
@@ -29,32 +28,32 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             padding: 50px;
         }
-        
+
         .logo-section {
             text-align: center;
             margin-bottom: 40px;
         }
-        
+
         .logo {
             font-size: 3em;
             margin-bottom: 10px;
         }
-        
+
         h1 {
             color: #333;
             font-size: 1.8em;
             margin-bottom: 5px;
         }
-        
+
         .subtitle {
             color: #666;
             font-size: 0.95em;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -62,7 +61,7 @@
             font-weight: 600;
             font-size: 0.95em;
         }
-        
+
         input[type="text"],
         input[type="password"],
         input[type="email"] {
@@ -74,7 +73,7 @@
             font-family: inherit;
             transition: all 0.3s ease;
         }
-        
+
         input[type="text"]:focus,
         input[type="password"]:focus,
         input[type="email"]:focus {
@@ -82,11 +81,11 @@
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        
+
         input::placeholder {
             color: #999;
         }
-        
+
         .remember-forgot {
             display: flex;
             justify-content: space-between;
@@ -94,7 +93,7 @@
             margin-bottom: 20px;
             font-size: 0.9em;
         }
-        
+
         .remember-forgot label {
             margin-bottom: 0;
             font-weight: 500;
@@ -102,21 +101,21 @@
             display: flex;
             align-items: center;
         }
-        
+
         .remember-forgot input[type="checkbox"] {
             margin-right: 5px;
             cursor: pointer;
         }
-        
+
         .remember-forgot a {
             color: #667eea;
             text-decoration: none;
         }
-        
+
         .remember-forgot a:hover {
             text-decoration: underline;
         }
-        
+
         .btn-login {
             width: 100%;
             padding: 12px;
@@ -129,16 +128,16 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .btn-login:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
-        
+
         .btn-login:active {
             transform: translateY(0);
         }
-        
+
         .signup-section {
             text-align: center;
             margin-top: 30px;
@@ -147,40 +146,40 @@
             font-size: 0.9em;
             color: #666;
         }
-        
+
         .signup-section a {
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
         }
-        
+
         .signup-section a:hover {
             text-decoration: underline;
         }
-        
+
         .messages {
             margin-bottom: 20px;
         }
-        
+
         .alert {
             padding: 12px;
             border-radius: 5px;
             margin-bottom: 10px;
             font-size: 0.9em;
         }
-        
+
         .alert-error {
             background: #f8d7da;
             border: 1px solid #f5c6cb;
             color: #721c24;
         }
-        
+
         .alert-success {
             background: #d4edda;
             border: 1px solid #c3e6cb;
             color: #155724;
         }
-        
+
         .alert-info {
             background: #d1ecf1;
             border: 1px solid #bee5eb;
@@ -208,6 +207,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -236,6 +236,7 @@
                 transform: translate(-50%, -55%);
                 opacity: 0;
             }
+
             to {
                 transform: translate(-50%, -50%);
                 opacity: 1;
@@ -287,13 +288,20 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
             animation: shimmer 3s infinite;
         }
 
         @keyframes shimmer {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, 30px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(30px, 30px);
+            }
         }
 
         .modal-header.warning {
@@ -316,8 +324,15 @@
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .modal-title {
@@ -716,7 +731,20 @@
         }
     </style>
 </head>
-<body>
+
+
+
+
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block title %}
+
     <!-- Modal Backdrop -->
     <div class="modal-backdrop" id="modalBackdrop"></div>
 
@@ -738,7 +766,9 @@
                         <span>Status Information</span>
                     </div>
                     <div class="pending-section-content">
-                        Your application has been received and is <strong>currently under review</strong> by our administration team. We are carefully reviewing all submitted information to ensure compliance with our policies.
+                        Your application has been received and is <strong>currently under review</strong> by our
+                        administration team. We are carefully reviewing all submitted information to ensure compliance
+                        with our policies.
                     </div>
                 </div>
 
@@ -763,7 +793,8 @@
                         <span>What to Do Now</span>
                     </div>
                     <div class="pending-section-content">
-                        Please wait patiently for the approval decision. You can try logging in again once your account has been <strong>approved by an administrator</strong>.
+                        Please wait patiently for the approval decision. You can try logging in again once your account
+                        has been <strong>approved by an administrator</strong>.
                     </div>
                 </div>
             </div>
@@ -812,7 +843,8 @@
                             <div class="rejection-text">
                                 <strong>Account Deletion</strong>
                                 <p>
-                                    Your account will be <strong>automatically deleted</strong> in <strong>24 hours</strong>.
+                                    Your account will be <strong>automatically deleted</strong> in <strong>24
+                                        hours</strong>.
                                 </p>
                             </div>
                         </div>
@@ -845,7 +877,8 @@
                 <!-- Important Note -->
                 <div class="rejection-important-note">
                     <strong>💡 Helpful Tip</strong>
-                    Please review the rejection reason above carefully. When you reapply, ensure all information is accurate and complete to improve your chances of approval.
+                    Please review the rejection reason above carefully. When you reapply, ensure all information is
+                    accurate and complete to improve your chances of approval.
                 </div>
             </div>
             <div class="modal-footer">
@@ -861,82 +894,67 @@
             <h1>Library System</h1>
             <p class="subtitle">Sign in to your account</p>
         </div>
-        
+
         {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    {% if 'pending' in message|lower %}
-                        <script>
-                            window.addEventListener('DOMContentLoaded', function() {
-                                showModal('pendingModal');
-                            });
-                        </script>
-                    {% elif 'rejected' in message|lower %}
-                        <script>
-                            window.addEventListener('DOMContentLoaded', function() {
-                                var message = '{{ message }}';
-                                // Extract reason from message
-                                // Message format: "❌ Your registration request has been rejected. Reason: [reason] ❌ You can reapply after 24 hours."
-                                var reasonMatch = message.match(/Reason:\s*(.+?)\s*❌/);
-                                var reason = reasonMatch ? reasonMatch[1].trim() : 'Not specified';
-                                document.getElementById('rejectionReason').textContent = reason;
-                                showModal('rejectedModal');
-                            });
-                        </script>
-                    {% else %}
-                        <div class="alert alert-{{ message.tags }}">
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+        <div class="messages">
+            {% for message in messages %}
+            {% if 'pending' in message|lower %}
+            <script>
+                window.addEventListener('DOMContentLoaded', function () {
+                    showModal('pendingModal');
+                });
+            </script>
+            {% elif 'rejected' in message|lower %}
+            <script>
+                window.addEventListener('DOMContentLoaded', function () {
+                    var message = '{{ message }}';
+                    // Extract reason from message
+                    // Message format: "❌ Your registration request has been rejected. Reason: [reason] ❌ You can reapply after 24 hours."
+                    var reasonMatch = message.match(/Reason:\s*(.+?)\s*❌/);
+                    var reason = reasonMatch ? reasonMatch[1].trim() : 'Not specified';
+                    document.getElementById('rejectionReason').textContent = reason;
+                    showModal('rejectedModal');
+                });
+            </script>
+            {% else %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
             </div>
+            {% endif %}
+            {% endfor %}
+        </div>
         {% endif %}
-        
+
         <form method="POST" novalidate>
             {% csrf_token %}
-            
+
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email address" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
-            
+
             <div class="remember-forgot">
                 <label>
                     <input type="checkbox" name="remember"> Remember me
                 </label>
                 <a href="#">Forgot password?</a>
             </div>
-            
+
             <button type="submit" class="btn-login">Sign In</button>
         </form>
-        
+
         <div class="signup-section">
-            Don't have an account? <a href="{% url 'myapp:register' %}">Sign up here</a>
+            Don't have an account? <a href="{% url 'register' %}">Sign up here</a>
         </div>
     </div>
 
-    <script>
-        function showModal(modalId) {
-            document.getElementById('modalBackdrop').classList.add('show');
-            document.getElementById(modalId).classList.add('show');
-        }
+{% endblock %}
 
-        function closeModal(modalId) {
-            document.getElementById('modalBackdrop').classList.remove('show');
-            document.getElementById(modalId).classList.remove('show');
-        }
-
-        document.getElementById('modalBackdrop').addEventListener('click', function() {
-            document.querySelectorAll('.modal.show').forEach(modal => {
-                modal.classList.remove('show');
-            });
-            this.classList.remove('show');
-        });
-    </script>
-</body>
-</html>
+{% block script %}
+<script src="accounts/login.js"></script>
+{% endblock %}

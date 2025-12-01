@@ -17,7 +17,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "719b3b136bf9.ngrok-free.app"
+    # "719b3b136bf9.ngrok-free.app"
 ]
 
 
@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Authentication backend for email-based login
 AUTHENTICATION_BACKENDS = [
-    'myapp.backends.EmailBackend',
+    'accounts.backends.EmailBackend',  # Your custom backend
+    # 'django.contrib.auth.backends.ModelBackend',  # Fallback to default
 ]

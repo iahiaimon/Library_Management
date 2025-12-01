@@ -1,7 +1,7 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'phase_1.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Root App.settings')
 django.setup()
 
 from django.db import connection

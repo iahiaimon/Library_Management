@@ -3,7 +3,7 @@ import django
 import sys
 
 # Make sure we're using the correct settings
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'phase_1.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Root App.settings')
 
 # Reset Django to force fresh import
 if 'django.db.connections' in sys.modules:
