@@ -3,7 +3,6 @@ from .views import (
     register,
     student_register,
     librarian_register,
-    home,
     login_view,
     student_login,
     librarian_login,
@@ -14,7 +13,6 @@ from .views import (
 
 
 urlpatterns = [
-    path("", home, name="home"),
     path("register/", register, name="register"),
     path("register/student", student_register, name="register_student"),
     path("register/librarian", librarian_register, name="register_librarian"),
